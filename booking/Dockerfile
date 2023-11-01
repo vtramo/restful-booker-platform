@@ -4,10 +4,11 @@ ADD . /usr/local/booking
 
 WORKDIR /usr/local/booking
 
-COPY target ./
+ENV AUTH_SERVICE_URL=rbp-auth
+ENV MESSAGE_SERVICE_URL=rbp-message
+ENV PROFILE=dev
 
-ENV authDomain=rbp-auth
-ENV messageDomain=rbp-message
-ENV profile=dev
+RUN ./mvnw -DskipTests=true -q clean package
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-booking-*.jar -D
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-booking-*.jar -D
+EXPOSE 3000
