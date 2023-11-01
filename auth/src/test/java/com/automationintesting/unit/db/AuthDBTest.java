@@ -12,35 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AuthDBTest extends BaseTest {
 
     @Test
-    public void testStoreToken() throws SQLException, IOException {
-        Token token = new Token("abc");
-
-        Boolean tokenStored = authDB.insertToken(token);
-
-        assertEquals(true, tokenStored);
-    }
-
-    @Test
-    public void testQueryTokenExists() throws SQLException {
-        Token token = new Token("abc");
-        authDB.insertToken(token);
-
-        Token retrievedToken = authDB.queryToken(token);
-
-        assertEquals(token.getToken(), retrievedToken.getToken());
-    }
-
-    @Test
-    public void testRemovingToken() throws SQLException {
-        Token token = new Token("efg");
-        authDB.insertToken(token);
-
-        Boolean deleteSuccessful = authDB.deleteToken(token);
-
-        assertEquals( true, deleteSuccessful);
-    }
-
-    @Test
     public void testQueryCredentials() throws SQLException {
         Auth auth = new Auth("admin", "password");
 

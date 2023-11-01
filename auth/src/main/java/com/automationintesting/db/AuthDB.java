@@ -1,9 +1,8 @@
 package com.automationintesting.db;
 
+import com.automationintesting.config.DatabaseConfig;
 import com.automationintesting.model.Auth;
 import com.automationintesting.model.Token;
-import org.h2.jdbcx.JdbcDataSource;
-import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -12,10 +11,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Scanner;
 
 @Component
@@ -29,27 +27,23 @@ public class AuthDB {
     private Connection connection;
     private Logger logger = LoggerFactory.getLogger(AuthDB.class);
 
-    public AuthDB() throws SQLException, IOException {
-        JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:rbp-auth;MODE=MySQL");
-        ds.setUser("user");
-        ds.setPassword("password");
-        connection = ds.getConnection();
+    private final DatabaseConfig databaseConfig;
 
-        executeSqlFile("db.sql");
-        executeSqlFile("seed.sql");
+    public AuthDB(DatabaseConfig databaseConfig) throws SQLException, IOException {
+        this.databaseConfig = databaseConfig;
+        createJdbcDataSource();
+    }
 
-        // If you would like to access the DB for this API locally. Run this API with
-        // the environmental variable dbServer to true.
-        try{
-            if(System.getenv("dbServer").equals("true")){
-                Server.createTcpServer("-tcpPort", "9091", "-tcpAllowOthers").start();
-                logger.info("DB server mode enabled");
-            } else {
-                logger.info("DB server mode disabled");
-            }
-        } catch (NullPointerException e){
-            logger.info("DB server mode disabled");
+    private void createJdbcDataSource() throws SQLException, IOException {
+        connection = DriverManager.getConnection(
+            databaseConfig.getJdbcUrl(),
+            databaseConfig.getJdbcUsername(),
+            databaseConfig.getJdbcPassword()
+        );
+
+        if (databaseConfig.getInit()) {
+            executeSqlFile("db.sql");
+            executeSqlFile("seed.sql");
         }
     }
 
@@ -64,13 +58,16 @@ public class AuthDB {
         ps.setString(1, token.getToken());
 
         ResultSet result = ps.executeQuery();
-//        result.next();
 
-        if(result.next()) {
-            return new Token(result.getString("token"), result.getDate("expiry"));
+        if (result.next()) {
+            return new Token(result.getString("token"), getLocalDateTimeFromQueryTokenResult(result));
         } else {
            return null;
         }
+    }
+
+    private LocalDateTime getLocalDateTimeFromQueryTokenResult(ResultSet resultSet) throws SQLException {
+        return LocalDateTime.ofInstant(((Timestamp)resultSet.getObject("expiry")).toInstant(), ZoneId.systemDefault());
     }
 
     public Boolean deleteToken(Token token) throws SQLException {
@@ -97,7 +94,7 @@ public class AuthDB {
         Scanner sc = new Scanner(reader);
 
         StringBuffer sb = new StringBuffer();
-        while(sc.hasNext()){
+        while(sc.hasNext()) {
             sb.append(sc.nextLine());
         }
 
