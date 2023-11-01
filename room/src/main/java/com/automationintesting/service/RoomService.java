@@ -6,7 +6,6 @@ import com.automationintesting.model.db.Rooms;
 import com.automationintesting.model.service.RoomResult;
 import com.automationintesting.requests.AuthRequests;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
@@ -18,14 +17,14 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RoomService {
 
-    @Autowired
-    private RoomDB roomDB;
+    private final RoomDB roomDB;
 
-    private AuthRequests authRequests;
+    private final AuthRequests authRequests;
 
     @Autowired
-    public RoomService() {
-        authRequests = new AuthRequests();
+    public RoomService(RoomDB roomDB, AuthRequests authRequests) {
+        this.roomDB = roomDB;
+        this.authRequests = authRequests;
     }
 
     @EventListener(ApplicationReadyEvent.class)
