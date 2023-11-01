@@ -34,6 +34,7 @@
                 <configuration>
                     <includes>
                         <include>**/*IT</include>
+                        <include>**/*CT</include>
                     </includes>
                 </configuration>
             </plugin>
