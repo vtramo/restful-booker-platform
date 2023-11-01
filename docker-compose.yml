@@ -1,42 +1,116 @@
 version: '3.7'
 services:
   rbp-booking:
-    image: mwinteringham/restfulbookerplatform_booking:1.6.a1fd0e5
+    container_name: rbp-booking
+    build:
+      context: ./booking
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    depends_on:
+      rbp-message:
+        condition: service_started
+      rbp-auth:
+        condition: service_started
     restart: always
+
   rbp-room:
-    image: mwinteringham/restfulbookerplatform_room:1.6.a1fd0e5
+    container_name: rbp-room
+    build:
+      context: ./room
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    depends_on:
+      rbp-auth:
+        condition: service_started
     restart: always
+
   rbp-branding:
-    image: mwinteringham/restfulbookerplatform_branding:1.6.a1fd0e5
+    container_name: rbp-branding
+    build:
+      context: ./branding
+      dockerfile: Dockerfile
     ports:
       - "3002:3002"
+    depends_on:
+      rbp-auth:
+        condition: service_started
     restart: always
+
   rbp-assets:
-    image: mwinteringham/restfulbookerplatform_assets:1.6.a1fd0e5
+    container_name: rbp-assets
+    build:
+      context: ./assets
+      dockerfile: Dockerfile
     ports:
       - "3003:3003"
+    depends_on:
+      rbp-proxy:
+        condition: service_started
     restart: always
+
   rbp-auth:
-    image: mwinteringham/restfulbookerplatform_auth:1.6.a1fd0e5
+    container_name: rbp-auth
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
     ports:
       - "3004:3004"
     restart: always
+
   rbp-report:
-    image: mwinteringham/restfulbookerplatform_report:1.6.a1fd0e5
+    container_name: rbp-report
+    build:
+      context: ./report
+      dockerfile: Dockerfile
     ports:
       - "3005:3005"
+    depends_on:
+      rbp-room:
+        condition: service_started
+      rbp-booking:
+        condition: service_started
     restart: always
+
   rbp-message:
-    image: mwinteringham/restfulbookerplatform_message:1.6.a1fd0e5
+    container_name: rbp-message
+    build:
+      context: ./message
+      dockerfile: Dockerfile
     ports:
       - "3006:3006"
+    depends_on:
+      rbp-auth:
+        condition: service_started
     restart: always
+
   rbp-proxy:
-    image: mwinteringham/restfulbookerplatform_proxy:latest
+    container_name: rbp-proxy
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+      args:
+        - BOOKING_SERVICE_URL=rbp-booking:3000
+        - ROOM_SERVICE_URL=rbp-room:3001
+        - BRANDING_SERVICE_URL=rbp-branding:3002
+        - AUTH_SERVICE_URL=rbp-auth:3004
+        - REPORT_SERVICE_URL=rbp-report:3005
+        - MESSAGE_SERVICE_URL=rbp-message:3006
+        - ASSETS_SERVICE_URL=rbp-assets:3003
     ports:
-      - "80:80"
+      - "8080:8080"
+    depends_on:
+      rbp-report:
+        condition: service_started
+      rbp-auth:
+        condition: service_started
+      rbp-booking:
+        condition: service_started
+      rbp-room:
+        condition: service_started
+      rbp-message:
+        condition: service_started
+      rbp-branding:
+        condition: service_started
     restart: always
