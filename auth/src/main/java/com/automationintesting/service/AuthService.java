@@ -19,11 +19,15 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AuthService {
 
-    @Autowired
-    private AuthDB authDB;
+    private final AuthDB authDB;
+
+    private final AppConfig appConfig;
 
     @Autowired
-    private AppConfig appConfig;
+    public AuthService(AppConfig appConfig, AuthDB authDB) {
+        this.appConfig = appConfig;
+        this.authDB = authDB;
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void beginDbScheduler() {
