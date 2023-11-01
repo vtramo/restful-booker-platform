@@ -4,9 +4,10 @@ ADD . /usr/local/room
 
 WORKDIR /usr/local/room
 
-COPY target ./
+ENV PROFILE=dev
+ENV AUTH_SERVICE_URL=localhost:3001
 
-ENV profile=dev
-ENV authDomain=rbp-auth
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-room-*.jar -D
+COPY ./target .
+
+ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE target/restful-booker-platform-room-*.jar -D
