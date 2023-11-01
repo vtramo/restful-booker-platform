@@ -1,0 +1,136 @@
+version: '3.7'
+services:
+  rbp-booking:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-booking:1.0
+    environment:
+      - MESSAGE_SERVICE_URL=rbp-message
+    ports:
+      - "3000:3000"
+    depends_on:
+      rbp-message:
+        condition: service_started
+      rbp-auth:
+        condition: service_started
+    restart: always
+
+  rbp-room:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-room:1.0
+    environment:
+        ROOM_DB_JDBC_URL: "jdbc:postgresql://postgres:5432/test?loggerLevel=OFF"
+        ROOM_DB_JDBC_USERNAME: "postgres"
+        ROOM_DB_JDBC_PASSWORD: "postgres"
+    ports:
+      - "3001:3001"
+    depends_on:
+      rbp-auth:
+        condition: service_started
+      postgres:
+        condition: service_started
+    restart: always
+
+  rbp-branding:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-branding:1.0
+    ports:
+      - "3002:3002"
+    depends_on:
+      rbp-auth:
+        condition: service_started
+    restart: always
+
+  rbp-assets:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-assets:1.0
+    ports:
+      - "3003:3003"
+    depends_on:
+      rbp-proxy:
+        condition: service_started
+    restart: always
+
+  rbp-auth:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-auth:1.0
+    environment:
+        AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
+        AUTH_DB_JDBC_USERNAME: postgres
+        AUTH_DB_JDBC_PASSWORD: postgres
+    ports:
+      - "3004:3004"
+    depends_on:
+      postgres:
+        condition: service_started
+    restart: always
+
+  rbp-report:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-report:1.0
+    environment:
+      - BOOKING_SERVICE_URL=rbp-booking
+      - ROOM_SERVICE_URL=rbp-room
+    ports:
+      - "3005:3005"
+    depends_on:
+      rbp-room:
+        condition: service_started
+      rbp-booking:
+        condition: service_started
+    restart: always
+
+  rbp-message:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-message:1.0
+    ports:
+      - "3006:3006"
+    depends_on:
+      rbp-auth:
+        condition: service_started
+    restart: always
+
+  rbp-proxy:
+    networks:
+      app:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      rbp-report:
+        condition: service_started
+      rbp-auth:
+        condition: service_started
+      rbp-booking:
+        condition: service_started
+      rbp-room:
+        condition: service_started
+      rbp-message:
+        condition: service_started
+      rbp-branding:
+        condition: service_started
+    restart: always
+
+  postgres:
+    networks:
+      app:
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+networks:
+  app:
