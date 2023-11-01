@@ -27,8 +27,6 @@ ui/public/js
 /mvnw
 /mvnw.cmd
 /.docker/.env
-
-target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -43,8 +41,6 @@ buildNumber.properties
 # Compiled class file
 *.class
 
-# Log file
-*.log
 
 # BlueJ files
 *.ctxt
