@@ -33,3 +33,10 @@ Assuming you have successfully built the application at least once, you can now 
 The user login details are:
 * Username: admin
 * Password: password
+
+## Development
+
+### API details
+
+The details on running checks, building APIs and additional details on documentation for development can be found in 
+READMEs inside each of the API folders.
