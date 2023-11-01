@@ -19,10 +19,16 @@ services:
     build:
       context: ./room
       dockerfile: Dockerfile
+    environment:
+      ROOM_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
+      ROOM_DB_JDBC_USERNAME: postgres
+      ROOM_DB_JDBC_PASSWORD: postgres
     ports:
       - "3001:3001"
     depends_on:
       rbp-auth:
+        condition: service_started
+      postgres:
         condition: service_started
     restart: always
 
@@ -52,9 +58,16 @@ services:
 
   rbp-auth:
     container_name: rbp-auth
+    depends_on:
+      postgres:
+        condition: service_started
     build:
       context: ./auth
       dockerfile: Dockerfile
+    environment:
+      AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
+      AUTH_DB_JDBC_USERNAME: postgres
+      AUTH_DB_JDBC_PASSWORD: postgres
     ports:
       - "3004:3004"
     restart: always
@@ -114,3 +127,12 @@ services:
       rbp-branding:
         condition: service_started
     restart: always
+
+  postgres:
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
