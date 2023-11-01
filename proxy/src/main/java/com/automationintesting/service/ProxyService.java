@@ -1,5 +1,7 @@
 package com.automationintesting.service;
 
+import com.automationintesting.config.ConfigProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,17 +19,22 @@ import java.util.Enumeration;
 @Service
 public class ProxyService {
 
+    private final ConfigProperties configProperties;
+
+    @Autowired
+    public ProxyService(final ConfigProperties configProperties) {
+        this.configProperties = configProperties;
+    }
+
     public ResponseEntity<String> passthroughRequest(String body, HttpMethod method, HttpServletRequest request) throws URISyntaxException {
         String requestUrl = request.getRequestURI();
 
         URI uri = new URI("http", null, "localhost", 0, null, null, null);
         int port = derivePortNumber(requestUrl);
 
-        uri = UriComponentsBuilder.fromUri(uri)
-                .port(port)
-                .path(requestUrl)
-                .query(request.getQueryString())
-                .build(true).toUri();
+        uri = UriComponentsBuilder.fromUri(deriveServiceUri(requestUrl))
+            .query(request.getQueryString())
+            .build(true).toUri();
 
         HttpHeaders headers = new HttpHeaders();
         Enumeration<String> headerNames = request.getHeaderNames();
@@ -47,26 +54,48 @@ public class ProxyService {
             return restTemplate.exchange(uri, method, httpEntity, String.class);
         } catch(HttpStatusCodeException e) {
             return ResponseEntity.status(e.getRawStatusCode())
-                    .body(e.getResponseBodyAsString());
+                .body(e.getResponseBodyAsString());
         }
     }
 
     public int derivePortNumber(String requestUrl) {
-        if(requestUrl.matches("^\\/booking\\/.*")){
+        if (requestUrl.matches("^\\/booking\\/.*")) {
             return 3000;
-        } else if(requestUrl.matches("^\\/branding\\/.*")){
+        } else if(requestUrl.matches("^\\/branding\\/.*")) {
             return 3002;
-        } else if(requestUrl.matches("^\\/auth\\/.*")){
+        } else if(requestUrl.matches("^\\/auth\\/.*")) {
             return 3004;
-        } else if(requestUrl.matches("^\\/report\\/.*")){
+        } else if(requestUrl.matches("^\\/report\\/.*")) {
             return 3005;
-        } else if(requestUrl.matches("^\\/room\\/.*")){
+        } else if(requestUrl.matches("^\\/room\\/.*")) {
             return 3001;
-        } else if(requestUrl.matches("^\\/message\\/.*")){
+        } else if(requestUrl.matches("^\\/message\\/.*")) {
             return 3006;
         } else {
             return 3003;
         }
+    }
+
+    public URI deriveServiceUri(String requestUrl) {
+        String uri;
+
+        if(requestUrl.matches("^\\/booking\\/.*")){
+            uri = configProperties.getBookingServiceUrl();
+        } else if (requestUrl.matches("^\\/branding\\/.*")){
+            uri = configProperties.getBrandingServiceUrl();
+        } else if (requestUrl.matches("^\\/auth\\/.*")){
+            uri = configProperties.getAuthServiceUrl();
+        } else if (requestUrl.matches("^\\/report\\/.*")){
+            uri = configProperties.getReportServiceUrl();
+        } else if (requestUrl.matches("^\\/room\\/.*")){
+            uri = configProperties.getRoomServiceUrl();
+        } else if (requestUrl.matches("^\\/message\\/.*")){
+            uri = configProperties.getMessageServiceUrl();
+        } else {
+            uri = configProperties.getAssetsServiceUrl();
+        }
+
+        return UriComponentsBuilder.fromUriString("http://" + uri).build(true).toUri();
     }
 
 }
