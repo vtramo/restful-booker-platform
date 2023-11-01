@@ -1,0 +1,1 @@
+INSERT INTO ACCOUNTS (username, password) VALUES ('pippo11', 'pppassword');

@@ -14,15 +14,7 @@ public class BaseTest {
 
     @BeforeAll
     public static void createRoomDB() throws SQLException, IOException {
-        // First we check if a DB is already open by seeing if
-        // dbOpen is set to true. If it's not, create a new BookingDB
-        if(!dbOpen){
-            authDB = new AuthDB();
 
-            dbOpen = true;
-        }
-
-        authDB.resetDB();
     }
 
 }
