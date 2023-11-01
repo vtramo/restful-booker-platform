@@ -12,11 +12,9 @@ public class Token {
     private LocalDateTime expiry;
     private Duration tokenDuration;
 
-    }
-
-    public Token(String token) {
+    public Token(String token, Duration tokenDuration) {
         this.token = token;
-
+        this.tokenDuration = tokenDuration;
         expiry = createExpiryTimestamp();
     }
 
