@@ -50,5 +50,5 @@ public class DatabaseConfig {
 
     public void setInit(boolean init) { this.init = init; }
 
-    public boolean init() { return init; }
+    public boolean getInit() { return init; }
 }
