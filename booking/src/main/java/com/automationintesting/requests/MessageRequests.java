@@ -12,10 +12,10 @@ public class MessageRequests {
     private String host;
 
     public MessageRequests() {
-        if(System.getenv("messageDomain") == null){
+        if(System.getenv("MESSAGE_SERVICE_URL") == null){
             host = "http://localhost:3006";
         } else {
-            host = "http://" + System.getenv("messageDomain") + ":3006";
+            host = "http://" + System.getenv("MESSAGE_SERVICE_URL") + ":3006";
         }
     }
 
