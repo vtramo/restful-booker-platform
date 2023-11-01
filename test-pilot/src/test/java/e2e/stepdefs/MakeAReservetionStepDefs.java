@@ -87,5 +87,6 @@ public class MakeAReservetionStepDefs {
 
         WebElement unavailable = driver.findElement(By.className("rbc-event-content"));
         assertThat(unavailable.getText(), is(equalTo("Unavailable")));
+        driver.close();
     }
 }
