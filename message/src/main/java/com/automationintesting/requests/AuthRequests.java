@@ -12,10 +12,10 @@ public class AuthRequests {
     private String host;
 
     public AuthRequests() {
-        if(System.getenv("authDomain") == null){
+        if(System.getenv("AUTH_SERVICE_URL") == null){
             host = "http://localhost:3004";
         } else {
-            host = "http://" + System.getenv("authDomain") + ":3004";
+            host = "http://" + System.getenv("AUTH_SERVICE_URL") + ":3004";
         }
     }
 
