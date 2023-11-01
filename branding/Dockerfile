@@ -4,9 +4,10 @@ ADD . /usr/local/branding
 
 WORKDIR /usr/local/branding
 
-COPY target ./
+ENV PROFILE=dev
+ENV AUTH_SERVICE_URL=localhost:3004
 
-ENV profile=dev
-ENV authDomain=rbp-auth
+RUN ./mvnw -DskipTests=true -q clean package
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-branding-*.jar -D
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-branding-*.jar -D
+EXPOSE 3002
