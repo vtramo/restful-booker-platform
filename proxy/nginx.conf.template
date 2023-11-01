@@ -1,0 +1,47 @@
+worker_processes 1;
+
+events { worker_connections 1024; }
+
+http {
+
+    sendfile on;
+
+    server {
+        listen 8080;
+
+        location /booking/ {
+            proxy_pass http://${BOOKING_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location /room/ {
+            proxy_pass http://${ROOM_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location /branding/ {
+            proxy_pass http://${BRANDING_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location /auth/ {
+            proxy_pass http://${AUTH_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location /report/ {
+            proxy_pass http://${REPORT_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location /message/ {
+            proxy_pass http://${MESSAGE_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+
+        location / {
+            proxy_pass http://${ASSETS_SERVICE_URL};
+            proxy_set_header Host ${DOLLAR}host;
+        }
+    }
+}

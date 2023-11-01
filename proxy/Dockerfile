@@ -9,7 +9,7 @@ ARG AUTH_SERVICE_URL=localhost:3004
 ARG ASSETS_SERVICE_URL=localhost:3003
 ARG DOLLAR=$
 
-COPY nginx.conf /etc/nginx/nginx.conf.template
-RUN envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+COPY nginx.conf.template /etc/nginx/nginx.conf.template
+RUN envsubst < /etc/nginx/nginx.conf.template.template > /etc/nginx/nginx.conf.template
 
 EXPOSE 8080
