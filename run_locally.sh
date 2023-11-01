@@ -27,21 +27,6 @@ java -jar proxy/target/restful-booker-platform-local-proxy-*.jar > proxy.log &
 
 node .utilities/monitor/local_monitor.js
 
-printf "\n\n####### RESTFUL-BOOKER-PLATFORM #######
-####                               ####
-####    RUNNING E2E CHECKS         ####
-####                               ####
-#######################################\n"
-
-if [ "$DO_E2E" = "true" ]; then
-  cd end-to-end-tests
-
-  mvn clean test
-else
-printf "\n          SKIPPING E2E TESTS
- Add -e true argument to run E2E tests\n"
-fi
-
 printf "\n####### RESTFUL-BOOKER-PLATFORM #######
 ####                               ####
 ####      APPLICATION READY        ####

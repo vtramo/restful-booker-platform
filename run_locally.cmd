@@ -1,7 +1,5 @@
 @echo off
 
-set DO_E2E=%1
-
 echo:
 echo ####### RESTFUL-BOOKER-PLATFORM #######
 echo ####                               ####
@@ -35,24 +33,6 @@ for /f "delims=" %%a in ('dir proxy\target\*.jar /B /O:D') do set "proxy_jar=%%a
 START /B java -jar proxy/target/%proxy_jar% > proxy.log
 
 call node .utilities/monitor/local_monitor.js
-
-echo:
-echo \n
-echo ####### RESTFUL-BOOKER-PLATFORM #######
-echo ####                               ####
-echo ####    RUNNING E2E CHECKS         ####
-echo ####                               ####
-echo #######################################
-
-if "%DO_E2E%" == "true" (
-  cd %cmdFileDirectory%end-to-end-tests
-  call mvn clean test
-  cd ..
-) else (
-  echo:
-  echo:         SKIPPING E2E TESTS
-  echo:  Add true argument to run E2E tests
-)
 
 echo:
 echo ####### RESTFUL-BOOKER-PLATFORM #######
