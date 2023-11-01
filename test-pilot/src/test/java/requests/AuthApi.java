@@ -5,8 +5,6 @@ import io.restassured.response.Response;
 import payloads.auth.Auth;
 import payloads.auth.Token;
 
-import java.util.Optional;
-
 import static io.restassured.RestAssured.given;
 
 public class AuthApi extends BaseApi {

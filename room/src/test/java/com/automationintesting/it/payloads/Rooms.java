@@ -1,6 +1,5 @@
 package com.automationintesting.it.payloads;
 
-import com.automationintesting.it.payloads.Room;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

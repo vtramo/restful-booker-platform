@@ -2,14 +2,15 @@ package com.automationintesting.db;
 
 import com.automationintesting.config.DatabaseConfig;
 import com.automationintesting.model.db.Room;
-import org.h2.jdbcx.JdbcDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Scanner;
 public class RoomDB {
 
     private Connection connection;
-    private Logger logger = LoggerFactory.getLogger(RoomDB.class);
+    private final Logger logger = LoggerFactory.getLogger(RoomDB.class);
     private final String SELECT_ROOMS = "SELECT * FROM ROOMS";
     private final String SELECT_BY_ROOMID = "SELECT * FROM ROOMS WHERE roomid = ?";
     private final String DELETE_BY_ROOMID = "DELETE FROM ROOMS WHERE roomid = ?";
@@ -107,7 +108,7 @@ public class RoomDB {
     }
 
     public List<Room> queryRooms() throws SQLException {
-        List<Room> listToReturn = new ArrayList<Room>();
+        List<Room> listToReturn = new ArrayList<>();
 
         PreparedStatement ps = connection.prepareStatement(SELECT_ROOMS);
 
@@ -133,7 +134,7 @@ public class RoomDB {
         Reader reader = new InputStreamReader( new ClassPathResource(filename).getInputStream());
         Scanner sc = new Scanner(reader);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while(sc.hasNext()){
             sb.append(sc.nextLine());
         }
