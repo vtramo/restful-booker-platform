@@ -4,9 +4,10 @@ ADD . /usr/local/message
 
 WORKDIR /usr/local/message
 
-COPY target ./
+ENV AUTH_SERVICE_URL=localhost:3004
+ENV PROFILE=dev
 
-ENV authDomain=rbp-auth
-ENV profile=dev
+RUN ./mvnw -DskipTests=true -q clean package
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-message-*.jar -D
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} target/restful-booker-platform-message-*.jar -D
+EXPOSE 3006
