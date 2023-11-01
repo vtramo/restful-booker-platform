@@ -1,13 +1,5 @@
 #!/bin/sh
 
-while getopts e: option
-  do
-    case "${option}"
-  in
-    e) DO_E2E=${OPTARG};;
-  esac
-done
-
 printf "\n####### RESTFUL-BOOKER-PLATFORM #######
 ####                               ####
 ####    STARTING APPLICATION...    ####
