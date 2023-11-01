@@ -1,12 +1,12 @@
-FROM openjdk:15-slim
+FROM openjdk:17-slim
 
 ADD . /usr/local/auth
 
 WORKDIR /usr/local/auth
 
-ENV profile=dev
+ENV PROFILE=dev
 
-COPY target ./
+RUN ./mvnw -DskipTests=true -q clean package
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} restful-booker-platform-auth-*.jar
-
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-auth-*.jar
+EXPOSE 3004
