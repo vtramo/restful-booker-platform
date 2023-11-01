@@ -14,8 +14,12 @@ import java.net.URISyntaxException;
 @RestController
 public class ProxyController {
 
+    final ProxyService proxyService;
+
     @Autowired
-    ProxyService proxyService;
+    public ProxyController(ProxyService proxyService) {
+        this.proxyService = proxyService;
+    }
 
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxy(@RequestBody(required = false) String body, HttpMethod method, HttpServletRequest request) throws URISyntaxException {
