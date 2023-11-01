@@ -9,10 +9,10 @@ public class RoomRequests {
     private String host;
 
     public RoomRequests() {
-        if(System.getenv("roomDomain") == null){
+        if(System.getenv("ROOM_SERVICE_URL") == null){
             host = "http://localhost:3001/room";
         } else {
-            host = "http://" + System.getenv("roomDomain") + ":3001/room";
+            host = "http://" + System.getenv("ROOM_SERVICE_URL") + ":3001/room";
         }
     }
 
