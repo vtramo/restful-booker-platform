@@ -4,10 +4,10 @@ ADD . /usr/local/report
 
 WORKDIR /usr/local/report
 
-COPY target ./
+ENV ROOM_SERVICE_URL=localhost:3001
+ENV BOOKING_SERVICE_URL=localhost:3000
+ENV PROFILE=dev
 
-ENV roomDomain=rbp-room
-ENV bookingDomain=rbp-booking
-ENV profile=dev
+RUN ./mvnw -DskipTests=true -q clean package
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$profile target/restful-booker-platform-report-*.jar -D
+ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE target/restful-booker-platform-report-*.jar -D
