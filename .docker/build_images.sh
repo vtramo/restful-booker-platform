@@ -12,6 +12,7 @@ printf "Beginning image building (in the following order): \n%s\n%s\n%s\n%s\n%s\
   "${DOCKER_TAG_ROOM_SERVICE}" \
   "${DOCKER_TAG_ASSETS_SERVICE}"
 
+mvn clean -DskipTests install -f ../pom.xml
 
 echo "Building auth service docker image ${DOCKER_TAG_AUTH_SERVICE}..."
 docker build --quiet -t "${DOCKER_TAG_AUTH_SERVICE}" ../auth
