@@ -1,17 +1,16 @@
 package com.automationintesting.model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Token {
 
     private String token;
-    private Date expiry;
-
-    public Token(){
+    private LocalDateTime expiry;
+    private Duration tokenDuration;
 
     }
 
@@ -21,10 +20,12 @@ public class Token {
         expiry = createExpiryTimestamp();
     }
 
-    public Token(String token, Date expiry){
-        this.token = token;
+    public Token(String token, LocalDateTime expiry) {
         this.expiry = expiry;
+        this.token = token;
     }
+
+    public Token() {}
 
     public String getToken() {
         return token;
@@ -34,21 +35,22 @@ public class Token {
         this.token = token;
     }
 
+    public LocalDateTime getExpiry() {
+        return expiry;
+    }
+
     public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
         final String CREATE_TOKEN = "INSERT INTO PUBLIC.TOKENS (token, expiry) VALUES(?, ?);";
 
         PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TOKEN);
         preparedStatement.setString(1, token);
-        preparedStatement.setDate(2, expiry);
+        preparedStatement.setObject(2, expiry);
 
         return preparedStatement;
     }
 
-    private Date createExpiryTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new java.util.Date());
-        cal.add(Calendar.HOUR_OF_DAY, 1);
-        return new Date(cal.getTime().getTime());
+    private LocalDateTime createExpiryTimestamp() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.plus(tokenDuration);
     }
-
 }
