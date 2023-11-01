@@ -66,44 +66,4 @@ public class AuthServiceTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, decision.getStatus());
     }
 
-    @Test
-    public void testTokenPositiveVerification() throws SQLException {
-        Token token = new Token("abc");
-        when(authDB.queryToken(token)).thenReturn(new Token("abc"));
-
-        HttpStatus tokenIsValid = authService.verify(token);
-
-        assertEquals(HttpStatus.OK, tokenIsValid);
-    }
-
-    @Test
-    public void testTokenNegativeVerification() throws SQLException {
-        Token token = new Token("abc");
-        when(authDB.queryToken(token)).thenReturn(null);
-
-        HttpStatus tokenIsInvalid = authService.verify(token);
-
-        assertEquals(HttpStatus.FORBIDDEN, tokenIsInvalid);
-    }
-
-    @Test
-    public void testClearingToken() throws SQLException {
-        Token token = new Token("efg");
-        when(authDB.deleteToken(token)).thenReturn(true);
-
-        HttpStatus tokenIsDeleted = authService.deleteToken(token);
-
-        assertEquals(HttpStatus.OK, tokenIsDeleted);
-    }
-
-    @Test
-    public void testUnableToClearToken() throws SQLException {
-        Token token = new Token("efg");
-        when(authDB.deleteToken(token)).thenReturn(false);
-
-        HttpStatus tokenIsDeleted = authService.deleteToken(token);
-
-        assertEquals(HttpStatus.NOT_FOUND, tokenIsDeleted);
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.automationintesting.service;
 
+import com.automationintesting.config.AppConfig;
 import com.automationintesting.db.AuthDB;
 import com.automationintesting.model.Auth;
 import com.automationintesting.model.Decision;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +22,9 @@ public class AuthService {
     @Autowired
     private AuthDB authDB;
 
+    @Autowired
+    private AppConfig appConfig;
+
     @EventListener(ApplicationReadyEvent.class)
     public void beginDbScheduler() {
         DatabaseScheduler databaseScheduler = new DatabaseScheduler();
@@ -27,20 +32,19 @@ public class AuthService {
     }
 
     public HttpStatus verify(Token token) throws SQLException {
-        System.out.println(token.toString());
         Token returnedToken = authDB.queryToken(token);
 
-        if(returnedToken != null){
-            return HttpStatus.OK;
-        } else {
+        if (returnedToken == null || returnedToken.getExpiry().isBefore(LocalDateTime.now())) {
             return HttpStatus.FORBIDDEN;
         }
+
+        return HttpStatus.OK;
     }
 
     public HttpStatus deleteToken(Token token) throws SQLException {
         Boolean successfulDeletion = authDB.deleteToken(token);
 
-        if(successfulDeletion){
+        if (successfulDeletion) {
             return HttpStatus.OK;
         } else {
             return HttpStatus.NOT_FOUND;
@@ -48,12 +52,12 @@ public class AuthService {
     }
 
     public Decision queryCredentials(Auth auth) throws SQLException {
-        if(authDB.queryCredentials(auth)){
-            Token token = new Token(new RandomString(16, ThreadLocalRandom.current()).nextString());
-
+        if (authDB.queryCredentials(auth)) {
+            String randomString = new RandomString(16, ThreadLocalRandom.current()).nextString();
+            Token token = new Token(randomString, appConfig.getTokenLifeDuration());
             Boolean successfulStorage = authDB.insertToken(token);
 
-            if(successfulStorage){
+            if (successfulStorage) {
                 return new Decision(HttpStatus.OK, token);
             } else {
                 return new Decision(HttpStatus.INTERNAL_SERVER_ERROR);
