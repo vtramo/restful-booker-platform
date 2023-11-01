@@ -1,4 +1,4 @@
-# Restful-booker-message
+# Restful Booker Message
 
 Message is responsible for creating, reading and deleting message data from the database to share with other services.
 

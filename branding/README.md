@@ -1,4 +1,4 @@
-# Restful-booker-branding
+# Restful Booker Branding
 
 Branding is responsible for reading and updating branding data from the database to share with the home and admin pages.
 

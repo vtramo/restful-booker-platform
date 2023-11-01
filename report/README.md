@@ -1,4 +1,4 @@
-# Restful-booker-report
+# Restful Booker Report
 
 Report is responsible for collating information about the different rooms their bookings.
 
