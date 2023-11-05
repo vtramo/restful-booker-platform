@@ -3,7 +3,7 @@ services:
   rbp-booking:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-booking:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-booking:1.0
     environment:
       - MESSAGE_SERVICE_URL=rbp-message
     ports:
@@ -18,7 +18,7 @@ services:
   rbp-room:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-room:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-room:1.0
     environment:
         ROOM_DB_JDBC_URL: "jdbc:postgresql://postgres:5432/test?loggerLevel=OFF"
         ROOM_DB_JDBC_USERNAME: "postgres"
@@ -35,7 +35,7 @@ services:
   rbp-branding:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-branding:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-branding:1.0
     ports:
       - "3002:3002"
     depends_on:
@@ -46,7 +46,7 @@ services:
   rbp-assets:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-assets:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-assets:1.0
     ports:
       - "3003:3003"
     depends_on:
@@ -57,7 +57,7 @@ services:
   rbp-auth:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-auth:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-auth:1.0
     environment:
         AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
         AUTH_DB_JDBC_USERNAME: postgres
@@ -72,7 +72,7 @@ services:
   rbp-report:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-report:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-report:1.0
     environment:
       - BOOKING_SERVICE_URL=rbp-booking
       - ROOM_SERVICE_URL=rbp-room
@@ -88,7 +88,7 @@ services:
   rbp-message:
     networks:
       app:
-    image: ${DOCKER_REGISTRY_URL-localhost:5000}/restful-booker-platform-message:1.0
+    image: ${DOCKER_REGISTRY_URL-}restful-booker-platform-message:1.0
     ports:
       - "3006:3006"
     depends_on:
