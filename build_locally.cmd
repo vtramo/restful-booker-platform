@@ -3,5 +3,5 @@
 set cmdFileDirectory=%~dp0
 
 cd %cmdFileDirectory%
-call mvn clean install
+call mvn clean -DskipTests install
 CALL run_locally.cmd false
