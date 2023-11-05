@@ -5,6 +5,8 @@ services:
     build:
       context: ./booking
       dockerfile: Dockerfile
+    networks:
+      app:
     ports:
       - "3000:3000"
     depends_on:
@@ -19,6 +21,8 @@ services:
     build:
       context: ./room
       dockerfile: Dockerfile
+    networks:
+      app:
     environment:
       ROOM_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
       ROOM_DB_JDBC_USERNAME: postgres
@@ -37,6 +41,8 @@ services:
     build:
       context: ./branding
       dockerfile: Dockerfile
+    networks:
+      app:
     ports:
       - "3002:3002"
     depends_on:
@@ -49,6 +55,8 @@ services:
     build:
       context: ./assets
       dockerfile: Dockerfile
+    networks:
+      app:
     ports:
       - "3003:3003"
     depends_on:
@@ -64,6 +72,8 @@ services:
     build:
       context: ./auth
       dockerfile: Dockerfile
+    networks:
+      app:
     environment:
       AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
       AUTH_DB_JDBC_USERNAME: postgres
@@ -77,6 +87,8 @@ services:
     build:
       context: ./report
       dockerfile: Dockerfile
+    networks:
+      app:
     ports:
       - "3005:3005"
     depends_on:
@@ -91,6 +103,8 @@ services:
     build:
       context: ./message
       dockerfile: Dockerfile
+    networks:
+      app:
     ports:
       - "3006:3006"
     depends_on:
@@ -100,6 +114,8 @@ services:
 
   rbp-proxy:
     image: nginx:alpine
+    networks:
+      app:
     volumes:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
@@ -121,9 +137,14 @@ services:
 
   postgres:
     image: postgres:15.2-alpine
+    networks:
+      app:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
     ports:
       - "5432:5432"
+
+networks:
+  app:
