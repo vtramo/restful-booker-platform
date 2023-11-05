@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>restful-booker-platform-room</artifactId>
-    <version>1.6.${revision}</version>
+    <version>1.6-SNAPSHOT</version>
 
     <parent>
         <groupId>com.automationintesting</groupId>
