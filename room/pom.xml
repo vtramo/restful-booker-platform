@@ -11,7 +11,7 @@
         <groupId>com.automationintesting</groupId>
         <artifactId>restful-booker-platform</artifactId>
         <version>1.6-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <properties>
