@@ -20,6 +20,10 @@ RUN set -uex; \
 RUN rm -rf target node_modules
 RUN npm install
 RUN npm run build
+
+RUN apt-get update && apt-get install dos2unix
+RUN dos2unix ../api/mvnw
+RUN chmod +x ../api/mvnw
 RUN ../api/mvnw -f ../api/pom.xml -DskipTests=true -q package
 
 ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE ../api/target/restful-booker-platform-assets-*.jar
