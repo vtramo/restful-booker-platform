@@ -10,7 +10,7 @@ echo:
 
 docker compose -f ./docker-compose.yml up -d
 
-call node .utilities/monitor/local_monitor.js
+call node .utilities/local_monitor.js
 
 echo:
 echo ####### RESTFUL-BOOKER-PLATFORM #######
