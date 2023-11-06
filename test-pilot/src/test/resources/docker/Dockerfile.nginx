@@ -1,0 +1,6 @@
+FROM nginx
+
+RUN apt-get update
+RUN apt-get install dos2unix
+COPY nginx.conf /etc/nginx/nginx.conf
+RUN dos2unix /etc/nginx/nginx.conf

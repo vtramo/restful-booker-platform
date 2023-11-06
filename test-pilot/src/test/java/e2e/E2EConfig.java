@@ -15,7 +15,8 @@ public class E2EConfig {
         DockerComposeContainer<?> compose =
             new DockerComposeContainer<>(DOCKER_COMPOSE_FILE)
                 .waitingFor("rbp-proxy", Wait.defaultWaitStrategy())
-                .withExposedService("rbp-proxy", 8080)
+                .withBuild(true)
+		.withExposedService("rbp-proxy", 8080)
                 .withExposedService("rbp-booking", 3000)
                 .withExposedService("rbp-room", 3001)
                 .withExposedService("rbp-assets", 3003)
