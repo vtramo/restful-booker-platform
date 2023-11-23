@@ -6,7 +6,9 @@ pipeline {
     stages {
         stage('Integration Tests') {
             steps {
-                mvn test
+                sh '''
+                    mvn test
+                '''
             }
         }
     }
