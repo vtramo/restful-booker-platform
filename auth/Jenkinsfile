@@ -1,0 +1,13 @@
+pipeline {
+    agent {
+        label 'java-maven'
+    }
+
+    stages {
+        stage('Integration Tests') {
+            steps {
+                mvn test
+            }
+        }
+    }
+}
