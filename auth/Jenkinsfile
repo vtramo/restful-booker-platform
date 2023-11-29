@@ -49,7 +49,9 @@ pipeline {
 
     post {
         always  {
-            junit 'target/surefire-reports/**/*.xml'
+            dir('auth') {
+                junit 'target/surefire-reports/**/*.xml'
+            }
         }
     }
 }
