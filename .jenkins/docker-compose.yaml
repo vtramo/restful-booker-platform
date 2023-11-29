@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+  socat:
+    image: alpine/socat
+    command: "tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins
+    ports:
+      - "2376:2375"
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    environment:
+      - TZ=Europe/Rome
+    depends_on:
+      - socat
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    networks:
+      - jenkins
+    ports:
+      - "8090:8080"
+      - "50000:50000"
+
+volumes:
+  jenkins-data:
+    external: true
+
+networks:
+  jenkins:
+    external: true
