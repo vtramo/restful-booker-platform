@@ -3,13 +3,53 @@ pipeline {
         label 'java-maven'
     }
 
+    environment {
+        DOCKER_REGISTRY_URL = 'localhost:5000'
+    }
+
     stages {
+        stage('Build') {
+            steps {
+                dir('auth') {
+                     sh '''
+                         mvn clean package
+                     '''
+                }
+            }
+        }
+
         stage('Integration Tests') {
             steps {
+                dir('auth') {
+                    sh '''
+                        mvn test
+                    '''
+                }
+            }
+        }
+
+        stage('Build Image') {
+            steps {
                 sh '''
-                    mvn test
+                    docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:1.0 .
                 '''
             }
+        }
+
+        stage('Push Image') {
+            steps {
+                dir("${env.WORKSPACE}/aQA") {
+                    sh '''
+                        docker push ${DOCKER_REGISTRY_URL}/rbp-auth:1.0
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always  {
+            junit 'build/reports/**/*.xml'
         }
     }
 }
