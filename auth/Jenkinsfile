@@ -71,6 +71,11 @@ pipeline {
         always  {
             dir('auth') {
                 junit 'target/surefire-reports/**/*.xml'
+                jacoco(
+                    execPattern: 'target/**/*.exec',
+                    classPattern: 'target/classes/java/main',
+                    sourcePattern: '**/src/main'
+                )
             }
         }
     }
