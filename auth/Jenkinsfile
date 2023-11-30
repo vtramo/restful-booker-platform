@@ -7,8 +7,16 @@ pipeline {
         DOCKER_REGISTRY_URL = 'localhost:5000'
     }
 
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+
     stages {
         stage('Build') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
             steps {
                 dir('auth') {
                      sh '''
@@ -19,6 +27,10 @@ pipeline {
         }
 
         stage('Integration Tests') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
             steps {
                 dir('auth') {
                     sh '''
@@ -29,6 +41,10 @@ pipeline {
         }
 
         stage('Build Image') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
             steps {
                 dir('auth') {
                     sh '''
@@ -39,6 +55,10 @@ pipeline {
         }
 
         stage('Push Image') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
             steps {
                 sh '''
                     docker push ${DOCKER_REGISTRY_URL}/rbp-auth:1.0
