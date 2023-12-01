@@ -26,31 +26,20 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
+        stage('End to end Tests') {
             options {
                 timeout(time: 1, unit: 'MINUTES')
             }
 
             steps {
-                dir('test-pilot') {
+                dir('auth') {
                     sh '''
-                        docker build -t ${DOCKER_REGISTRY_URL}/rbp-test-pilot:1.0 .
+                        mvn test -Dcucumber.features=src/test/resources -f ../pom.xml
                     '''
                 }
             }
         }
 
-        stage('Push Image') {
-            options {
-                timeout(time: 1, unit: 'MINUTES')
-            }
-
-            steps {
-                sh '''
-                    docker push ${DOCKER_REGISTRY_URL}/rbp-test-pilot:1.0
-                '''
-            }
-        }
     }
 
     post {
