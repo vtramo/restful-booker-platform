@@ -1,0 +1,68 @@
+pipeline {
+    agent {
+        label 'java-maven'
+    }
+
+    environment {
+        DOCKER_REGISTRY_URL = 'localhost:5000'
+    }
+
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+
+    stages {
+        stage('Build') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
+            steps {
+                dir('test-pilot') {
+                     sh '''
+                         mvn clean package
+                     '''
+                }
+            }
+        }
+
+        stage('Build Image') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
+            steps {
+                dir('test-pilot') {
+                    sh '''
+                        docker build -t ${DOCKER_REGISTRY_URL}/rbp-test-pilot:1.0 .
+                    '''
+                }
+            }
+        }
+
+        stage('Push Image') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
+            steps {
+                sh '''
+                    docker push ${DOCKER_REGISTRY_URL}/rbp-test-pilot:1.0
+                '''
+            }
+        }
+    }
+
+    post {
+        always  {
+            dir('test-pilot') {
+                junit 'target/surefire-reports/**/*.xml'
+                jacoco(
+                    execPattern: 'target/**/*.exec',
+                    classPattern: 'target/classes/com/rbp',
+                    sourcePattern: 'src/main/java/com/rbp'
+                )
+            }
+        }
+    }
+}
