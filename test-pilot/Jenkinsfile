@@ -19,9 +19,9 @@ pipeline {
 
             steps {
                 dir('test-pilot') {
-                     sh '''
-                         mvn clean package
-                     '''
+                    sh '''
+                        mvn clean package
+                    '''
                 }
             }
         }
