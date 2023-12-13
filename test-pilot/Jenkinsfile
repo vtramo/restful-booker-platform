@@ -34,7 +34,7 @@ pipeline {
             steps {
                 dir('test-pilot') {
                     sh '''
-                        mvn test -Dcucumber.features=src/test/resources -f ../pom.xml
+                        mvn test -Dcucumber.features=src/test/resources
                     '''
                 }
             }
