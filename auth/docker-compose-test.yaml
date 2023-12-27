@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  rbp-auth:
+    networks:
+      app:
+    image: ${DOCKER_REGISTRY_URL-}/rbp-auth:1.0
+    environment:
+      AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
+      AUTH_DB_JDBC_USERNAME: postgres
+      AUTH_DB_JDBC_PASSWORD: postgres
+    ports:
+      - "${RBP_AUTH_PORT}:3004"
+    depends_on:
+      postgres:
+        condition: service_started
+    restart: always
+    healthcheck:
+      test: curl http://localhost:3004/auth/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    networks:
+      app:
+    image: postgres:15.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+
+networks:
+  app:
