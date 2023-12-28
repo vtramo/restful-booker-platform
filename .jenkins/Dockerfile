@@ -16,4 +16,10 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubunt
 RUN apt-get update && \
     apt-get install -y docker-ce docker-ce-cli containerd.io
 
+# Install python
+RUN apt-get install -y python3 pip virtualenv
+
+# Install bzt for Performance Testing
+RUN pip install bzt
+
 CMD ["/bin/bash"]
