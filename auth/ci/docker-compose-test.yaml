@@ -10,7 +10,7 @@ services:
       AUTH_DB_JDBC_USERNAME: postgres
       AUTH_DB_JDBC_PASSWORD: postgres
     ports:
-      - "${RBP_AUTH_PORT}:3004"
+      - "${RBP_AUTH_SERVICE_PORT}:3004"
     depends_on:
       postgres:
         condition: service_started
@@ -30,6 +30,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
+    volumes:
+      - ./create-test-users.sql:/docker-entrypoint-initdb.d/create-test-users.sql
+      - ./test-users.csv:/docker-entrypoint-initdb.d/test-users.csv
     ports:
       - "5432:5432"
 

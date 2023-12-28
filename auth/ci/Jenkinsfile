@@ -5,10 +5,14 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY_URL = 'localhost:5000'
+        RBP_AUTH_SERVICE_MAIN_DIR = 'auth'
+        RBP_AUTH_SERVICE_CI_DIR = 'auth/ci'
+        RBP_AUTH_SERVICE_PORT = '3004'
+        RBP_AUTH_SERVICE_URL = "http://localhost:${RBP_AUTH_SERVICE_PORT}/auth"
     }
 
     options {
-        timeout(time: 5, unit: 'MINUTES')
+        timeout(time: 7, unit: 'MINUTES')
     }
 
     stages {
@@ -18,10 +22,8 @@ pipeline {
             }
 
             steps {
-                dir('auth') {
-                     sh '''
-                         mvn clean package
-                     '''
+                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                     sh 'mvn clean package'
                 }
             }
         }
@@ -32,10 +34,8 @@ pipeline {
             }
 
             steps {
-                dir('auth') {
-                    sh '''
-                        mvn test
-                    '''
+                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                    sh 'mvn test'
                 }
             }
         }
@@ -46,10 +46,21 @@ pipeline {
             }
 
             steps {
-                dir('auth') {
-                    sh '''
-                        docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:1.0 .
-                    '''
+                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                    sh 'docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:1.0 .'
+                }
+            }
+        }
+
+        stage('Performance Tests') {
+            options {
+                timeout(time: 1, unit: 'MINUTES')
+            }
+
+            steps {
+                dir("${RBP_AUTH_SERVICE_CI_DIR}") {
+                    sh 'docker compose -f docker-compose-test.yaml up -d --build --wait'
+                    bzt 'performance-test.csv'
                 }
             }
         }
@@ -60,22 +71,24 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    docker push ${DOCKER_REGISTRY_URL}/rbp-auth:1.0
-                '''
+                sh 'docker push ${DOCKER_REGISTRY_URL}/rbp-auth:1.0'
             }
         }
     }
 
     post {
         always  {
-            dir('auth') {
+            dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
                 junit 'target/surefire-reports/**/*.xml'
                 jacoco(
                     execPattern: 'target/**/*.exec',
                     classPattern: 'target/classes/com/rbp',
                     sourcePattern: 'src/main/java/com/rbp'
                 )
+            }
+
+            dir("${RBP_AUTH_SERVICE_CI_DIR}") {
+                sh 'docker compose -f docker-compose-test.yaml down'
             }
         }
     }
