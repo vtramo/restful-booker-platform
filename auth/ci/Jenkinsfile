@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'java-maven'
+        label 'build-agent'
     }
 
     environment {
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 dir("${RBP_AUTH_SERVICE_CI_DIR}") {
                     sh 'docker compose -f docker-compose-test.yaml up -d --build --wait'
-                    bzt 'performance-test.csv'
+                    bzt 'performance-test.yaml'
                 }
             }
         }
