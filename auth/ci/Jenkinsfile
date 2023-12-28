@@ -60,7 +60,6 @@ pipeline {
             steps {
                 dir("${RBP_AUTH_SERVICE_CI_DIR}") {
                     sh 'docker compose -f docker-compose-test.yaml up -d --build --wait || docker compose -f docker-compose-test.yaml logs'
-                    sh 'docker logs '
                     bzt 'performance-test.yaml'
                 }
             }
