@@ -7,8 +7,6 @@ pipeline {
         DOCKER_REGISTRY_URL = 'localhost:5000'
         RBP_AUTH_SERVICE_MAIN_DIR = 'auth'
         RBP_AUTH_SERVICE_CI_DIR = 'auth/ci'
-        RBP_AUTH_SERVICE_PORT = '3004'
-        RBP_AUTH_SERVICE_URL = "http://localhost:${RBP_AUTH_SERVICE_PORT}/auth"
     }
 
     options {
@@ -55,6 +53,12 @@ pipeline {
         stage('Performance Tests') {
             options {
                 timeout(time: 1, unit: 'MINUTES')
+            }
+
+            environment {
+                RBP_AUTH_SERVICE_HOSTNAME = 'localhost'
+                RBP_AUTH_SERVICE_PORT = '3004'
+                CSV_TEST_USERS_DATA_PATH = './test-users.csv'
             }
 
             steps {
