@@ -60,7 +60,7 @@ pipeline {
                 RBP_AUTH_SERVICE_PORT = '3004'
                 CSV_TEST_USERS_DATA_PATH = """${sh(
                     returnStdout: true,
-                    script: 'readlink -f "${RBP_AUTH_SERVICE_CI_DIR}/test-users.csv"'
+                    script: 'readlink -f "${RBP_AUTH_SERVICE_CI_DIR}/postgres-data/test-users.csv"'
                 )}"""
             }
 

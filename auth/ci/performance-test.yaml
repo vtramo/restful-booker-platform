@@ -1,4 +1,8 @@
 ---
+settings:
+  env:
+    CSV_TEST_USERS_DATA_PATH: ./postgres-data/test-users.csv
+
 execution:
   - concurrency: 20
     iterations: 3
