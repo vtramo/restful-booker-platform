@@ -27,7 +27,6 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
     volumes:
-      - ./create-test-users.sql:/docker-entrypoint-initdb.d/create-test-users.sql
-      - ./test-users.csv:/docker-entrypoint-initdb.d/test-users.csv
+      - ./postgres-data:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"

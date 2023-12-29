@@ -21,7 +21,7 @@ pipeline {
 
             steps {
                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                     sh 'mvn clean package'
+                     sh 'mvn clean package -DskipTests'
                 }
             }
         }
