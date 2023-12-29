@@ -58,16 +58,15 @@ pipeline {
             environment {
                 RBP_AUTH_SERVICE_HOSTNAME = 'localhost'
                 RBP_AUTH_SERVICE_PORT = '3004'
-                CSV_TEST_USERS_DATA_PATH = """${sh(
-                    returnStdout: true,
-                    script: 'readlink -f "${RBP_AUTH_SERVICE_CI_DIR}/postgres-data/test-users.csv"'
-                )}"""
             }
 
             steps {
                 dir("${RBP_AUTH_SERVICE_CI_DIR}") {
                     sh 'docker compose -f docker-compose-test.yaml up -d --build --wait'
-                    bzt 'performance-test.yaml'
+                    bzt """-o settings.env.JMETER_HOME=${JMETER_HOME} \
+                        -o settings.env.RBP_AUTH_SERVICE_HOSTNAME=${RBP_AUTH_SERVICE_HOSTNAME} \
+                        -o settings.env.RBP_AUTH_SERVICE_PORT=${RBP_AUTH_SERVICE_PORT} \
+                        performance-test.yaml"""
                 }
             }
         }
