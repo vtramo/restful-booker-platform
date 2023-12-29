@@ -2,8 +2,6 @@ version: '3.7'
 
 services:
   rbp-auth:
-    networks:
-      app:
     image: ${DOCKER_REGISTRY_URL-}/rbp-auth:1.0
     environment:
       AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
@@ -23,8 +21,6 @@ services:
       start_period: 10s
 
   postgres:
-    networks:
-      app:
     image: postgres:15.2-alpine
     environment:
       POSTGRES_USER: postgres
@@ -35,6 +31,3 @@ services:
       - ./test-users.csv:/docker-entrypoint-initdb.d/test-users.csv
     ports:
       - "5432:5432"
-
-networks:
-  app:

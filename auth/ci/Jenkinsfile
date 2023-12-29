@@ -58,12 +58,15 @@ pipeline {
             environment {
                 RBP_AUTH_SERVICE_HOSTNAME = 'localhost'
                 RBP_AUTH_SERVICE_PORT = '3004'
-                CSV_TEST_USERS_DATA_PATH = './test-users.csv'
+                CSV_TEST_USERS_DATA_PATH = """${sh(
+                    returnStdout: true,
+                    script: 'readlink -f "${RBP_AUTH_SERVICE_CI_DIR}/test-users.csv"'
+                )}"""
             }
 
             steps {
                 dir("${RBP_AUTH_SERVICE_CI_DIR}") {
-                    sh 'docker compose -f docker-compose-test.yaml up -d --build --wait || docker compose -f docker-compose-test.yaml logs'
+                    sh 'docker compose -f docker-compose-test.yaml up -d --build --wait'
                     bzt 'performance-test.yaml'
                 }
             }
