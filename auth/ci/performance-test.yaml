@@ -9,6 +9,11 @@ scenarios:
   login-validate-logout:
     script: performance-test-jmeter.jmx
 
+modules:
+  jmeter:
+    properties:
+      CSV_TEST_USERS_DATA_PATH: ${CSV_TEST_USERS_DATA_PATH}
+
 reporting:
   - module: passfail
     criteria:
