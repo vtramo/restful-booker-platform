@@ -20,6 +20,14 @@ RUN apt-get update && \
 RUN apt-get install -y python3 pip virtualenv
 
 # Install bzt for Performance Testing
-RUN pip install bzt
+RUN pip install --upgrade wheel setuptools Cython bzt
+
+# Install JMeter
+ARG JMETER_VERSION="5.6.2"
+ARG JMETER_DIR="apache-jmeter-${JMETER_VERSION}"
+ARG JMETER_TGZ="${JMETER_DIR}.tgz"
+ARG JMETER_URL="https://dlcdn.apache.org//jmeter/binaries/${JMETER_TGZ}"
+RUN curl -LO "${JMETER_URL}" && tar -xzf "$(basename "${JMETER_URL}")" && rm -rf "${JMETER_TGZ}"
+RUN export JMETER_HOME="$(readlink -f ${JMETER_DIR})/bin"
 
 CMD ["/bin/bash"]

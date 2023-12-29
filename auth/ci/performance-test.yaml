@@ -2,6 +2,7 @@
 settings:
   env:
     CSV_TEST_USERS_DATA_PATH: ./postgres-data/test-users.csv
+    JMETER_HOME: ~/apache-jmeter-5.6.2/bin
 
 execution:
   - concurrency: 20
@@ -14,6 +15,10 @@ scenarios:
     script: performance-test-jmeter.jmx
     variables:
       CSV_TEST_USERS_DATA_PATH: ${CSV_TEST_USERS_DATA_PATH}
+
+modules:
+  jmeter:
+    path: ${JMETER_HOME}/jmeter
 
 reporting:
   - module: passfail
