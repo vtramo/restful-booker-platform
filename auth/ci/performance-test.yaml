@@ -12,10 +12,7 @@ execution:
 scenarios:
   login-validate-logout:
     script: performance-test-jmeter.jmx
-
-modules:
-  jmeter:
-    properties:
+    variables:
       CSV_TEST_USERS_DATA_PATH: ${CSV_TEST_USERS_DATA_PATH}
 
 reporting:
