@@ -28,6 +28,6 @@ ARG JMETER_DIR="apache-jmeter-${JMETER_VERSION}"
 ARG JMETER_TGZ="${JMETER_DIR}.tgz"
 ARG JMETER_URL="https://dlcdn.apache.org//jmeter/binaries/${JMETER_TGZ}"
 RUN curl -LO "${JMETER_URL}" && tar -xzf "$(basename "${JMETER_URL}")" && rm -rf "${JMETER_TGZ}"
-RUN export JMETER_HOME="$(readlink -f ${JMETER_DIR})/bin"
+ENV JMETER_HOME="/${JMETER_DIR}/bin"
 
 CMD ["/bin/bash"]
