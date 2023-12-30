@@ -20,7 +20,7 @@
           <elementProp name="CSV_TEST_USERS_DATA_PATH" elementType="Argument">
             <stringProp name="Argument.name">CSV_TEST_USERS_DATA_PATH</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.value">/home/vincenzo/projects/restful-booker-platform/auth/ci/test-users.csv</stringProp>
+            <stringProp name="Argument.value">/home/vincenzo/projects/restful-booker-platform/auth/ci/postgres-data/test-users.csv</stringProp>
           </elementProp>
         </collectionProp>
       </elementProp>

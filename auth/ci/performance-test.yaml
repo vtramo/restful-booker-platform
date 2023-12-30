@@ -17,6 +17,8 @@ scenarios:
     script: performance-test-jmeter.jmx
     variables:
       CSV_TEST_USERS_DATA_PATH: ${CSV_TEST_USERS_DATA_PATH}
+      RBP_AUTH_SERVICE_HOSTNAME: ${RBP_AUTH_SERVICE_HOSTNAME}
+      RBP_AUTH_SERVICE_PORT: ${RBP_AUTH_SERVICE_PORT}
 
 modules:
   jmeter:
