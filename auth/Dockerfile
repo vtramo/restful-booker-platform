@@ -1,17 +1,14 @@
-FROM openjdk:17-slim
+ARG JAVA_VERSION=17
+FROM openjdk:${JAVA_VERSION}-slim
 
-ADD . /usr/local/auth
+RUN apt-get update && apt-get -y install curl
 
-WORKDIR /usr/local/auth
+COPY ./target/restful-booker-platform-auth-*.jar ./target/
 
 ENV PROFILE=dev
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} \
+    ./target/restful-booker-platform-auth-*.jar
 
-RUN apt-get update && apt-get install dos2unix && apt-get -y install curl
-RUN dos2unix mvnw
-RUN chmod +x mvnw
-RUN ./mvnw -DskipTests=true -q clean package
-
-ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-auth-*.jar
 EXPOSE 3004
 HEALTHCHECK \
     --interval=5s \

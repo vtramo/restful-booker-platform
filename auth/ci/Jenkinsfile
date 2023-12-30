@@ -10,7 +10,7 @@ pipeline {
     }
 
     options {
-        timeout(time: 7, unit: 'MINUTES')
+        timeout(time: 6, unit: 'MINUTES')
     }
 
     stages {
@@ -33,14 +33,14 @@ pipeline {
 
             steps {
                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                    sh 'mvn test'
+                    sh 'mvn surefire:test'
                 }
             }
         }
 
         stage('Build Image') {
             options {
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 30, unit: 'SECONDS')
             }
 
             steps {
@@ -73,7 +73,7 @@ pipeline {
 
         stage('Push Image') {
             options {
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 30, unit: 'SECONDS')
             }
 
             steps {
