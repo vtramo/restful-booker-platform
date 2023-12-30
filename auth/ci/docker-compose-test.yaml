@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   rbp-auth:
@@ -21,12 +21,10 @@ services:
       start_period: 10s
 
   postgres:
-    image: postgres:15.2-alpine
+    image: ${DOCKER_REGISTRY_URL-}/rbp-auth-postgres-test:15.2-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
-    volumes:
-      - ${POSTGRES_SQL_SCRIPTS_PATH}:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"

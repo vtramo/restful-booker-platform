@@ -58,10 +58,6 @@ pipeline {
             environment {
                 RBP_AUTH_SERVICE_HOSTNAME = 'localhost'
                 RBP_AUTH_SERVICE_PORT = '3004'
-                POSTGRES_SQL_SCRIPTS_PATH = """${sh(
-                    returnStdout: true,
-                    script: 'readlink -f "${RBP_AUTH_SERVICE_CI_DIR}/postgres-data"'
-                )}"""
             }
 
             steps {
