@@ -56,7 +56,7 @@ pipeline {
             }
 
             environment {
-                RBP_AUTH_SERVICE_HOSTNAME = 'localhost'
+                RBP_AUTH_SERVICE_HOSTNAME = 'rbp-auth'
                 RBP_AUTH_SERVICE_PORT = '3004'
             }
 
