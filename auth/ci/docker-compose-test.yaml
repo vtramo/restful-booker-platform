@@ -3,6 +3,8 @@ version: '3.8'
 services:
   rbp-auth:
     image: ${DOCKER_REGISTRY_URL-}/rbp-auth:1.0
+    networks:
+      - jenkins
     environment:
       AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
       AUTH_DB_JDBC_USERNAME: postgres
@@ -22,9 +24,15 @@ services:
 
   postgres:
     image: ${DOCKER_REGISTRY_URL-}/rbp-auth-postgres-test:15.2-alpine
+    networks:
+      - jenkins
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
     ports:
       - "5432:5432"
+
+networks:
+  jenkins:
+    external: true
