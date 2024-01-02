@@ -54,6 +54,7 @@
                 <configuration>
                     <includes>
                         <include>**/*IT</include>
+                        <include>**/*UT</include>
                     </includes>
                 </configuration>
             </plugin>
