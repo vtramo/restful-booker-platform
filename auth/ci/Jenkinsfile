@@ -10,7 +10,7 @@ pipeline {
     }
 
     options {
-        timeout(time: 6, unit: 'MINUTES')
+        timeout(time: 5, unit: 'MINUTES')
     }
 
     stages {
@@ -26,14 +26,26 @@ pipeline {
             }
         }
 
-        stage('Integration Tests') {
+        stage('Unit Tests') {
             options {
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 20, unit: 'SECONDS')
             }
 
             steps {
                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                    sh 'mvn surefire:test'
+                    sh 'mvn surefire:test -Dtest="**/*UT"'
+                }
+            }
+        }
+
+        stage('Integration Tests') {
+            options {
+                timeout(time: 40, unit: 'SECONDS')
+            }
+
+            steps {
+                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                    sh 'mvn surefire:test -Dtest="**/*IT"'
                 }
             }
         }
