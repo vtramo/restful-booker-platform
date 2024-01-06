@@ -10,6 +10,8 @@ pipeline {
     }
 
     options {
+        timestamps()
+        skipStagesAfterUnstable()
         timeout(time: 5, unit: 'MINUTES')
     }
 
@@ -33,7 +35,7 @@ pipeline {
 
             steps {
                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                    sh 'mvn surefire:test -Dtest="**/*UT"'
+                    sh 'mvn test'
                 }
             }
         }
@@ -45,7 +47,7 @@ pipeline {
 
             steps {
                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                    sh 'mvn surefire:test -Dtest="**/*IT"'
+                    sh 'mvn verify -Dskip.surefire.tests=true'
                 }
             }
         }
