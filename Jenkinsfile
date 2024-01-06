@@ -155,8 +155,8 @@ pipeline {
 
                 stage('Booking Service') {
                     environment {
-                        RBP_BOOKING_SERVICE_MAIN_DIR = 'room'
-                        RBP_BOOKING_SERVICE_CI_DIR = 'room/ci'
+                        RBP_BOOKING_SERVICE_MAIN_DIR = 'booking'
+                        RBP_BOOKING_SERVICE_CI_DIR = 'booking/ci'
                     }
 
                     stages {
@@ -197,8 +197,8 @@ pipeline {
 
                 stage('Message Service') {
                     environment {
-                        RBP_MESSAGE_SERVICE_MAIN_DIR = 'branding'
-                        RBP_MESSAGE_SERVICE_CI_DIR = 'branding/ci'
+                        RBP_MESSAGE_SERVICE_MAIN_DIR = 'message'
+                        RBP_MESSAGE_SERVICE_CI_DIR = 'message/ci'
                     }
 
                     stages {
