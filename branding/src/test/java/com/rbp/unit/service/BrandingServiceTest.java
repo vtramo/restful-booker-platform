@@ -17,10 +17,14 @@ import org.springframework.http.HttpStatus;
 
 import java.sql.SQLException;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class BrandingServiceTest {
+
+    private Map sampleMap;
+    private Contact sampleContact;
 
     @Mock
     private BrandingDB brandingDB;
@@ -37,10 +41,14 @@ public class BrandingServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @BeforeEach
+    public void initalizeBrandingAttributes(){
+        sampleContact = new Contact("Demo B&B contact name", "The street", "012345", "test@email.com");
+        sampleMap = new Map(2.00,4.00);
+    }
+
     @Test
     public void queryBrandingTest() throws SQLException {
-        Map sampleMap = new Map(2.00,4.00);
-        Contact sampleContact = new Contact("Demo B&B contact name", "The street", "012345", "test@email.com");
         Branding sampleBranding = new Branding("Demo B&B", sampleMap, "http://sample.url", "Branding description here", sampleContact);
 
         when(brandingDB.queryBranding()).thenReturn(sampleBranding);
@@ -50,11 +58,19 @@ public class BrandingServiceTest {
     }
 
     @Test
+    public void queryBrandingFailedTest() throws SQLException{
+        Branding anotherBranding = new Branding("Another B&B", sampleMap, "http://sample.url", "Branding description here", sampleContact);
+
+        when(brandingDB.queryBranding()).thenReturn(anotherBranding);
+
+        Branding branding = brandingService.getBrandingDetails();
+        assertNotEquals("Branding{name='Demo B&B', map=Map{latitude=2.0, longitude=4.0}, logoUrl='http://sample.url', description='Branding description here', contact=Contact{name='Demo B&B contact name', address='The street', phone='012345', email='test@email.com'}}", branding.toString());
+    }
+
+    @Test
     public void updateBrandingTest() throws SQLException {
         String token = "abc";
 
-        Map sampleMap = new Map(2.00,4.00);
-        Contact sampleContact = new Contact("Demo B&B contact name", "The street", "012345", "test@email.com");
         Branding sampleBranding = new Branding("Updated Branding", sampleMap, "http://sample.url", "Branding description here", sampleContact);
 
         when(brandingDB.update(sampleBranding)).thenReturn(sampleBranding);
