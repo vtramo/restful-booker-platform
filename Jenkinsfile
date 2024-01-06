@@ -19,8 +19,8 @@ pipeline {
             parallel {
                 stage('Auth Service') {
                     environment {
-                        RBP_AUTH_SERVICE_MAIN_DIR = 'restful-booker-platform/auth'
-                        RBP_AUTH_SERVICE_CI_DIR = 'restful-booker-platform/auth/ci'
+                        RBP_AUTH_SERVICE_MAIN_DIR = 'auth'
+                        RBP_AUTH_SERVICE_CI_DIR = 'auth/ci'
                     }
 
                     stages {
@@ -134,8 +134,8 @@ pipeline {
 
                 stage('Room Service') {
                     environment {
-                        RBP_ROOM_SERVICE_MAIN_DIR = 'restful-booker-platform/room'
-                        RBP_ROOM_SERVICE_CI_DIR = 'restful-booker-platform/room/ci'
+                        RBP_ROOM_SERVICE_MAIN_DIR = 'room'
+                        RBP_ROOM_SERVICE_CI_DIR = 'room/ci'
                     }
 
                     stages {
@@ -155,8 +155,8 @@ pipeline {
 
                 stage('Booking Service') {
                     environment {
-                        RBP_BOOKING_SERVICE_MAIN_DIR = 'restful-booker-platform/room'
-                        RBP_BOOKING_SERVICE_CI_DIR = 'restful-booker-platform/room/ci'
+                        RBP_BOOKING_SERVICE_MAIN_DIR = 'room'
+                        RBP_BOOKING_SERVICE_CI_DIR = 'room/ci'
                     }
 
                     stages {
@@ -176,8 +176,8 @@ pipeline {
 
                 stage('Branding Service') {
                     environment {
-                        RBP_BRANDING_SERVICE_MAIN_DIR = 'restful-booker-platform/branding'
-                        RBP_BRANDING_SERVICE_CI_DIR = 'restful-booker-platform/branding/ci'
+                        RBP_BRANDING_SERVICE_MAIN_DIR = 'branding'
+                        RBP_BRANDING_SERVICE_CI_DIR = 'branding/ci'
                     }
 
                     stages {
@@ -197,8 +197,8 @@ pipeline {
 
                 stage('Message Service') {
                     environment {
-                        RBP_MESSAGE_SERVICE_MAIN_DIR = 'restful-booker-platform/branding'
-                        RBP_MESSAGE_SERVICE_CI_DIR = 'restful-booker-platform/branding/ci'
+                        RBP_MESSAGE_SERVICE_MAIN_DIR = 'branding'
+                        RBP_MESSAGE_SERVICE_CI_DIR = 'branding/ci'
                     }
 
                     stages {
@@ -218,8 +218,8 @@ pipeline {
 
                 stage('Report Service') {
                     environment {
-                        RBP_REPORT_SERVICE_MAIN_DIR = 'restful-booker-platform/report'
-                        RBP_REPORT_SERVICE_CI_DIR = 'restful-booker-platform/report/ci'
+                        RBP_REPORT_SERVICE_MAIN_DIR = 'report'
+                        RBP_REPORT_SERVICE_CI_DIR = 'report/ci'
                     }
 
                     stages {
@@ -241,7 +241,7 @@ pipeline {
 
         stage('E2E Tests') {
             environment {
-                RBP_TEST_PILOT_MAIN_DIR = 'restful-booker-platform/test-pilot'
+                RBP_TEST_PILOT_MAIN_DIR = 'test-pilot'
             }
 
             options {
