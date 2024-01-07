@@ -76,6 +76,28 @@ pipeline {
                             }
                         }
 
+                        stage('[auth] SonarQube Scan') {
+                            options {
+                                timeout(time: 1, unit: 'MINUTES')
+                            }
+
+                            steps {
+                                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                                    withSonarQubeEnv(installationName: 'rbp-sonarqube') {
+                                        sh 'mvn sonar:sonar -Dsonar.projectKey=restful-booker-platform-auth -Dsonar.projectName=restful-booker-platform-auth'
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('[auth] Quality Gate') {
+                            steps {
+                                timeout(time: 2, unit: 'MINUTES') {
+                                    waitForQualityGate abortPipeline: true
+                                }
+                            }
+                        }
+
                         stage('[auth] Build Image') {
                             options {
                                 timeout(time: 30, unit: 'SECONDS')
@@ -134,9 +156,9 @@ pipeline {
                     }
 
                     post {
-                        always  {
+                        always {
                             dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                                junit (
+                                junit(
                                     testResults: 'target/surefire-reports/**/*.xml,target/failsafe-reports/**/*.xml',
                                     allowEmptyResults: true
                                 )
@@ -150,9 +172,9 @@ pipeline {
                                     enabledForFailure: true, aggregatingResults: true,
                                     tools: [
                                         java(),
-                                        junitParser(name: 'Unit Test Reports',
+                                        junitParser(name: 'Unit Test Warnings',
                                                     pattern: 'target/surefire-reports/**/*.xml'),
-                                        junitParser(name: 'Integration Test Reports',
+                                        junitParser(name: 'Integration Test Warnings',
                                                     pattern: 'target/failsafe-reports/**/*.xml')
                                     ]
                                 )
