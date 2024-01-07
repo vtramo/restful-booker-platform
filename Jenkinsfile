@@ -127,6 +127,10 @@ pipeline {
                                     sourcePattern: 'src/main/java/com/rbp'
                                 )
                                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                                recordIssues(
+                                    enabledForFailure: true, aggregatingResults: true,
+                                    tools: [java()]
+                                )
                             }
 
                             dir("${RBP_AUTH_SERVICE_CI_DIR}") {
