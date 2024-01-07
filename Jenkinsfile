@@ -83,7 +83,13 @@ pipeline {
 
                             steps {
                                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                                    sh 'docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:${GIT_SHORT_COMMIT} .'
+                                    sh '''
+                                        docker build \
+                                            --build-arg BUILD_NUMBER=${BUILD_NUMBER} \
+                                            --build-arg BUILD_TAG=${BUILD_TAG} \
+                                            --build-arg GIT_COMMIT=${GIT_COMMIT} \
+                                            -t ${DOCKER_REGISTRY_URL}/rbp-auth:${GIT_SHORT_COMMIT} .
+                                    '''
                                 }
                             }
                         }
