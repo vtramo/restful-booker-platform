@@ -312,6 +312,7 @@ pipeline {
             steps {
                 dir("${RBP_TEST_PILOT_MAIN_DIR}") {
                      sh 'ls'
+                     sh 'printenv'
                 }
             }
         }
