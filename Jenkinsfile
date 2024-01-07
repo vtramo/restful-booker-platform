@@ -18,7 +18,9 @@ pipeline {
         stage('Services Pipeline') {
             parallel {
                 stage('Mine Repository') {
-                    mineRepository
+                    steps {
+                        mineRepository
+                    }
                 }
 
                 stage('Auth Service') {
