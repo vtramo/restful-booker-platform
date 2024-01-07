@@ -19,7 +19,7 @@ pipeline {
             parallel {
                 stage('Mine Repository') {
                     steps {
-                        mineRepository
+                        mineRepository()
                     }
                 }
 
