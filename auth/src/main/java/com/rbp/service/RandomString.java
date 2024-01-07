@@ -77,11 +77,4 @@ public class RandomString {
         this(length, new SecureRandom());
     }
 
-    /**
-     * Create session identifiers.
-     */
-    public RandomString() {
-        this(21);
-    }
-
 }
