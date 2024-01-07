@@ -23,6 +23,13 @@ pipeline {
                         RBP_AUTH_SERVICE_CI_DIR = 'auth/ci'
                     }
 
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_AUTH_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_AUTH_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
+                    }
+
                     stages {
                         stage('[auth] Build') {
                             options {
@@ -138,6 +145,13 @@ pipeline {
                         RBP_ROOM_SERVICE_CI_DIR = 'room/ci'
                     }
 
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_ROOM_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_ROOM_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
+                    }
+
                     stages {
                         stage('[room] Build') {
                             options {
@@ -157,6 +171,13 @@ pipeline {
                     environment {
                         RBP_BOOKING_SERVICE_MAIN_DIR = 'booking'
                         RBP_BOOKING_SERVICE_CI_DIR = 'booking/ci'
+                    }
+
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_BOOKING_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_BOOKING_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
                     }
 
                     stages {
@@ -180,6 +201,13 @@ pipeline {
                         RBP_BRANDING_SERVICE_CI_DIR = 'branding/ci'
                     }
 
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_BRANDING_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_BRANDING_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
+                    }
+
                     stages {
                         stage('[branding] Build') {
                             options {
@@ -201,6 +229,13 @@ pipeline {
                         RBP_MESSAGE_SERVICE_CI_DIR = 'message/ci'
                     }
 
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_MESSAGE_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_MESSAGE_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
+                    }
+
                     stages {
                         stage('[message] Build') {
                             options {
@@ -220,6 +255,13 @@ pipeline {
                     environment {
                         RBP_REPORT_SERVICE_MAIN_DIR = 'report'
                         RBP_REPORT_SERVICE_CI_DIR = 'report/ci'
+                    }
+
+                    when {
+                        anyOf {
+                            changeset "${env.RBP_REPORT_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
+                            changeset "${env.RBP_REPORT_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
+                        }
                     }
 
                     stages {
