@@ -5,6 +5,8 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY_URL = 'localhost:5000'
+        GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+        GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
     }
 
     options {
@@ -80,7 +82,7 @@ pipeline {
 
                             steps {
                                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                                    sh 'docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:1.0 .'
+                                    sh 'docker build -t ${DOCKER_REGISTRY_URL}/rbp-auth:${GIT_SHORT_COMMIT} .'
                                 }
                             }
                         }
