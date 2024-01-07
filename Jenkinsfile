@@ -17,6 +17,10 @@ pipeline {
     stages {
         stage('Services Pipeline') {
             parallel {
+                stage('Mine Repository') {
+                    mineRepository
+                }
+
                 stage('Auth Service') {
                     when {
                         anyOf {
