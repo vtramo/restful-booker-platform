@@ -124,7 +124,10 @@ pipeline {
                     post {
                         always  {
                             dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                                junit 'target/surefire-reports/**/*.xml'
+                                junit (
+                                    testResults: 'target/surefire-reports/**/*.xml,target/failsafe-reports/**/*.xml',
+                                    allowEmptyResults: true
+                                )
                                 jacoco(
                                     execPattern: 'target/**/*.exec',
                                     classPattern: 'target/classes/com/rbp',
