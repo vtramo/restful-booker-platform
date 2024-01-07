@@ -15,3 +15,11 @@ HEALTHCHECK \
     --timeout=5s  \
     --retries=3   \
     CMD curl http://localhost:3004/auth/actuator/health
+
+ARG BUILD_NUMBER=0
+ARG BUILD_TAG=local
+ARG GIT_COMMIT=local
+
+LABEL build_number=${BUILD_NUMBER}
+LABEL build_tag=${BUILD_TAG}
+LABEL git_commit=${GIT_COMMIT}
