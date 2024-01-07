@@ -18,16 +18,16 @@ pipeline {
         stage('Services Pipeline') {
             parallel {
                 stage('Auth Service') {
+                    when {
+                        anyOf {
+                            changeset "auth/src/main/java/**/*.java"
+                            changeset "auth/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_AUTH_SERVICE_MAIN_DIR = 'auth'
                         RBP_AUTH_SERVICE_CI_DIR = 'auth/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_AUTH_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_AUTH_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
@@ -140,16 +140,16 @@ pipeline {
                 }
 
                 stage('Room Service') {
+                    when {
+                        anyOf {
+                            changeset "room/src/main/java/**/*.java"
+                            changeset "room/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_ROOM_SERVICE_MAIN_DIR = 'room'
                         RBP_ROOM_SERVICE_CI_DIR = 'room/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_ROOM_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_ROOM_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
@@ -168,16 +168,16 @@ pipeline {
                 }
 
                 stage('Booking Service') {
+                    when {
+                        anyOf {
+                            changeset "booking/src/main/java/**/*.java"
+                            changeset "booking/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_BOOKING_SERVICE_MAIN_DIR = 'booking'
                         RBP_BOOKING_SERVICE_CI_DIR = 'booking/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_BOOKING_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_BOOKING_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
@@ -196,16 +196,16 @@ pipeline {
                 }
 
                 stage('Branding Service') {
+                    when {
+                        anyOf {
+                            changeset "branding/src/main/java/**/*.java"
+                            changeset "branding/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_BRANDING_SERVICE_MAIN_DIR = 'branding'
                         RBP_BRANDING_SERVICE_CI_DIR = 'branding/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_BRANDING_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_BRANDING_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
@@ -224,16 +224,16 @@ pipeline {
                 }
 
                 stage('Message Service') {
+                    when {
+                        anyOf {
+                            changeset "message/src/main/java/**/*.java"
+                            changeset "message/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_MESSAGE_SERVICE_MAIN_DIR = 'message'
                         RBP_MESSAGE_SERVICE_CI_DIR = 'message/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_MESSAGE_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_MESSAGE_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
@@ -252,16 +252,16 @@ pipeline {
                 }
 
                 stage('Report Service') {
+                    when {
+                        anyOf {
+                            changeset "report/src/main/java/**/*.java"
+                            changeset "report/src/test/java/**/*.java"
+                        }
+                    }
+
                     environment {
                         RBP_REPORT_SERVICE_MAIN_DIR = 'report'
                         RBP_REPORT_SERVICE_CI_DIR = 'report/ci'
-                    }
-
-                    when {
-                        anyOf {
-                            changeset "${env.RBP_REPORT_SERVICE_MAIN_DIR}/src/main/java/**/*.java"
-                            changeset "${env.RBP_REPORT_SERVICE_MAIN_DIR}/src/test/java/**/*.java"
-                        }
                     }
 
                     stages {
