@@ -28,6 +28,7 @@ pipeline {
                 stage('Auth Service') {
                     when {
                         anyOf {
+                            changeset "auth/Dockerfile"
                             changeset "auth/src/main/java/**/*.java"
                             changeset "auth/src/test/java/**/*.java"
                         }
@@ -164,6 +165,7 @@ pipeline {
                 stage('Room Service') {
                     when {
                         anyOf {
+                            changeset "room/Dockerfile"
                             changeset "room/src/main/java/**/*.java"
                             changeset "room/src/test/java/**/*.java"
                         }
@@ -192,6 +194,7 @@ pipeline {
                 stage('Booking Service') {
                     when {
                         anyOf {
+                            changeset "booking/Dockerfile"
                             changeset "booking/src/main/java/**/*.java"
                             changeset "booking/src/test/java/**/*.java"
                         }
@@ -220,6 +223,7 @@ pipeline {
                 stage('Branding Service') {
                     when {
                         anyOf {
+                            changeset "branding/Dockerfile"
                             changeset "branding/src/main/java/**/*.java"
                             changeset "branding/src/test/java/**/*.java"
                         }
@@ -248,6 +252,7 @@ pipeline {
                 stage('Message Service') {
                     when {
                         anyOf {
+                            changeset "message/Dockerfile"
                             changeset "message/src/main/java/**/*.java"
                             changeset "message/src/test/java/**/*.java"
                         }
@@ -276,6 +281,7 @@ pipeline {
                 stage('Report Service') {
                     when {
                         anyOf {
+                            changeset "report/Dockerfile"
                             changeset "report/src/main/java/**/*.java"
                             changeset "report/src/test/java/**/*.java"
                         }
