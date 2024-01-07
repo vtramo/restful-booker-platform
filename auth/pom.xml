@@ -24,8 +24,48 @@
         <skip.surefire.tests>false</skip.surefire.tests>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:vtramo/restful-booker-platform.git</developerConnection>
+        <url>https://github.com/vtramo/restful-booker-platform.git</url>
+    </scm>
+
     <build>
         <plugins>
+            <!-- Plugin that lets us package the git commit hash in the executable JAR -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <doCheck>true</doCheck>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- A plugin that places the buildNumber (i.e., git hash) in the generated JAR archive -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
