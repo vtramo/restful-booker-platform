@@ -95,6 +95,7 @@ pipeline {
                             environment {
                                 RBP_AUTH_SERVICE_HOSTNAME = 'rbp-auth'
                                 RBP_AUTH_SERVICE_PORT = '3004'
+                                RBP_AUTH_SERVICE_DOCKER_IMAGE_TAG = "${GIT_SHORT_COMMIT}"
                             }
 
                             steps {
@@ -120,7 +121,7 @@ pipeline {
                             }
 
                             steps {
-                                sh 'docker push ${DOCKER_REGISTRY_URL}/rbp-auth:1.0'
+                                sh 'docker push ${DOCKER_REGISTRY_URL}/rbp-auth:${GIT_SHORT_COMMIT}'
                             }
                         }
                     }

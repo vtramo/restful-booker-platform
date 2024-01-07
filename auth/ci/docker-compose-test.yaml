@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   rbp-auth:
-    image: ${DOCKER_REGISTRY_URL-}/rbp-auth:1.0
+    image: ${DOCKER_REGISTRY_URL-}/rbp-auth:${RBP_AUTH_SERVICE_DOCKER_IMAGE_TAG:-latest}
     networks:
       - jenkins
     environment:
