@@ -140,11 +140,9 @@ pipeline {
                                     enabledForFailure: true, aggregatingResults: true,
                                     tools: [
                                         java(),
-                                        junitParser(id: 'unit-test-reports',
-                                                    name: 'Unit Test Reports',
+                                        junitParser(name: 'Unit Test Reports',
                                                     pattern: 'target/surefire-reports/**/*.xml'),
-                                        junitParser(id: 'integration-test-reports',
-                                                    name: 'Integration Test Reports',
+                                        junitParser(name: 'Integration Test Reports',
                                                     pattern: 'target/failsafe-reports/**/*.xml')
                                     ]
                                 )
