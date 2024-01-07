@@ -33,7 +33,6 @@ public class RandomString {
     // A string of all alpha-numeric characters
     public static final String alphanum = upper + lower + digits;
 
-    // The random
     private final Random random;
 
     // The symbols used for creating random strings
