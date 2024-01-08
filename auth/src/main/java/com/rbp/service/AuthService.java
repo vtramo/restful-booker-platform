@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
@@ -57,7 +58,8 @@ public class AuthService {
 
     public Decision queryCredentials(Auth auth) throws SQLException {
         if (authDB.queryCredentials(auth)) {
-            String randomString = new RandomString(16, ThreadLocalRandom.current()).nextString();
+            SecureRandom secureRandom = new SecureRandom();
+            String randomString = new RandomString(16, secureRandom).nextString();
             Token token = new Token(randomString, appConfig.getTokenLifeDuration());
             Boolean successfulStorage = authDB.insertToken(token);
 
