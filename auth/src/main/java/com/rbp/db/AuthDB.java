@@ -27,15 +27,23 @@ public class AuthDB implements AutoCloseable {
 
     private Connection connection;
     private final Logger logger = LoggerFactory.getLogger(AuthDB.class);
+    private final Logger unusedSonarQube = LoggerFactory.getLogger(AuthDB.class);
+    private String untestedSonarQube = "ciao";
 
     private final DatabaseConfig databaseConfig;
 
     public AuthDB(DatabaseConfig databaseConfig) throws SQLException, IOException {
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
         this.databaseConfig = databaseConfig;
         createJdbcDataSource();
     }
 
     private void createJdbcDataSource() throws SQLException, IOException {
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
         connection = DriverManager.getConnection(
             databaseConfig.getJdbcUrl(),
             databaseConfig.getJdbcUsername(),
