@@ -3,8 +3,6 @@ package com.rbp.db;
 import com.rbp.config.DatabaseConfig;
 import com.rbp.model.Auth;
 import com.rbp.model.Token;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
