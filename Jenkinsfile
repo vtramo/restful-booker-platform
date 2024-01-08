@@ -83,8 +83,8 @@ pipeline {
 
                             steps {
                                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
-                                    withSonarQubeEnv(installationName: 'rbp-sonarqube') {
-                                        sh 'mvn sonar:sonar -Dsonar.projectKey=restful-booker-platform-auth -Dsonar.projectName=restful-booker-platform-auth'
+                                    withSonarQubeEnv(installationName: 'sonarqube') {
+                                        sh 'mvn sonar:sonar'
                                     }
                                 }
                             }

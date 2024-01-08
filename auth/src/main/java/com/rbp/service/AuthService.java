@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -42,6 +41,10 @@ public class AuthService {
     public void closeDbScheduler() {
         if (databaseScheduler != null) {
             databaseScheduler.closeScheduledExecutorService();
+        }
+
+        if (authDB != null) {
+            authDB.close();
         }
     }
 
