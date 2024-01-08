@@ -44,6 +44,27 @@ public class AuthDB implements AutoCloseable {
         if(1 == 1){
             untestedSonarQube = "I'm not going to test this";
         }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
+        if(1 == 1){
+            untestedSonarQube = "I'm not going to test this";
+        }
         connection = DriverManager.getConnection(
             databaseConfig.getJdbcUrl(),
             databaseConfig.getJdbcUsername(),
