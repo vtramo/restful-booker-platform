@@ -13,6 +13,7 @@ public class DatabaseScheduler {
     private Logger logger = LoggerFactory.getLogger(DatabaseScheduler.class);
     private int resetCount;
     private boolean stop;
+    private ScheduledExecutorService scheduledExecutorService;
 
     public DatabaseScheduler() {
         if(System.getenv("dbRefresh") == null){
@@ -24,22 +25,21 @@ public class DatabaseScheduler {
 
     public void startScheduler(AuthDB authDB, TimeUnit timeUnit){
         if(resetCount > 0){
-            try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
+            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-                Runnable r = () -> {
-                    if (!stop) {
-                        try {
-                            logger.info("Resetting database");
+            Runnable r = () -> {
+                if(!stop){
+                    try {
+                        logger.info("Resetting database");
 
-                            authDB.resetDB();
-                        } catch (Exception e) {
-                            logger.error("Scheduler failed " + e.getMessage());
-                        }
+                        authDB.resetDB();
+                    } catch ( Exception e ) {
+                        logger.error("Scheduler failed " + e.getMessage());
                     }
-                };
+                }
+            };
 
-                executor.scheduleAtFixedRate(r, 0L, resetCount, timeUnit);
-            }
+            scheduledExecutorService.scheduleAtFixedRate ( r , 0L , resetCount , timeUnit );
         } else {
             logger.info("No env var was set for DB refresh (or set as 0) so not running DB reset");
         }
@@ -51,5 +51,11 @@ public class DatabaseScheduler {
 
     public void stepScheduler() {
         stop = true;
+    }
+
+    public void closeScheduledExecutorService() {
+        if (this.scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.rbp.model.Decision;
 import com.rbp.model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class AuthService {
     private final AuthDB authDB;
 
     private final AppConfig appConfig;
+    private DatabaseScheduler databaseScheduler;
 
     @Autowired
     public AuthService(AppConfig appConfig, AuthDB authDB) {
@@ -32,8 +34,15 @@ public class AuthService {
 
     @EventListener(ApplicationReadyEvent.class)
     public void beginDbScheduler() {
-        DatabaseScheduler databaseScheduler = new DatabaseScheduler();
+        databaseScheduler = new DatabaseScheduler();
         databaseScheduler.startScheduler(authDB, TimeUnit.MINUTES);
+    }
+
+    @EventListener(ContextClosedEvent.class)
+    public void closeDbScheduler() {
+        if (databaseScheduler != null) {
+            databaseScheduler.closeScheduledExecutorService();
+        }
     }
 
     public HttpStatus verify(Token token) throws SQLException {
