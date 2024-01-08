@@ -23,6 +23,7 @@ public class AuthDB implements AutoCloseable {
     private final String SELECT_BY_TOKEN = "SELECT * FROM TOKENS WHERE token = ?";
     private final String DELETE_BY_TOKEN = "DELETE FROM TOKENS WHERE token = ?";
     private final String SELECT_BY_CREDENTIALS = "SELECT * FROM ACCOUNTS WHERE username = ? AND password = ?";
+    private final String CREATE_TOKEN = "INSERT INTO PUBLIC.TOKENS (token, expiry) VALUES(?, ?);";
 
     private Connection connection;
     private final Logger logger = LoggerFactory.getLogger(AuthDB.class);
@@ -48,8 +49,10 @@ public class AuthDB implements AutoCloseable {
     }
 
     public Boolean insertToken(Token token) throws SQLException {
-        try (PreparedStatement createPs = token.getPreparedStatement(connection)) {
-            return createPs.executeUpdate() > 0;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TOKEN)) {
+            preparedStatement.setString(1, token.getToken());
+            preparedStatement.setObject(2, token.getExpiry());
+            return preparedStatement.executeUpdate() > 0;
         }
     }
 

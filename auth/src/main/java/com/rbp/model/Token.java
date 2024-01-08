@@ -37,16 +37,6 @@ public class Token {
         return expiry;
     }
 
-    public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
-        final String CREATE_TOKEN = "INSERT INTO PUBLIC.TOKENS (token, expiry) VALUES(?, ?);";
-
-        PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TOKEN);
-        preparedStatement.setString(1, token);
-        preparedStatement.setObject(2, expiry);
-
-        return preparedStatement;
-    }
-
     private LocalDateTime createExpiryTimestamp() {
         LocalDateTime now = LocalDateTime.now();
         return now.plus(tokenDuration);
