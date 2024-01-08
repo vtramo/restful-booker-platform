@@ -82,6 +82,20 @@ public class BookingServiceTest {
     }
 
     @Test
+    public void emptyBookingsByRoomIdTest() throws SQLException {
+        String roomId = "3";
+        String validatedToken = "validatedToken";
+        List<Booking> emptyBookings = new ArrayList<Booking>();
+
+        when(bookingDB.queryBookingsById(roomId)).thenReturn(emptyBookings);
+        when(authRequests.postCheckAuth(validatedToken)).thenReturn(true);
+
+        Optional<String> opRoomId = Optional.of(roomId);
+        BookingResult bookingResult = bookingService.getBookings(opRoomId, validatedToken);
+        assertEquals(0, bookingResult.getBookings().getBookings().size());
+    }
+
+    @Test
     public void returnSpecificBookingTest() throws SQLException {
         Booking booking = this.createGenericBooking();
         when(bookingDB.query(2)).thenReturn(booking);
