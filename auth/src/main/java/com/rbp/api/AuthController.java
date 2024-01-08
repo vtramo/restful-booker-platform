@@ -28,6 +28,8 @@ public class AuthController {
 
         if(decision.getStatus() == HttpStatus.OK){
             Cookie cookie = new Cookie("token", decision.getToken().getToken());
+            cookie.setSecure(false);
+            cookie.setHttpOnly(true);
             cookie.setPath("/");
 
             response.addCookie(cookie);
