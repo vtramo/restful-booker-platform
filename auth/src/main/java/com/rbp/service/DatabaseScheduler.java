@@ -24,21 +24,22 @@ public class DatabaseScheduler {
 
     public void startScheduler(AuthDB authDB, TimeUnit timeUnit){
         if(resetCount > 0){
-            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            try (ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor()) {
 
-            Runnable r = () -> {
-                if(!stop){
-                    try {
-                        logger.info("Resetting database");
+                Runnable r = () -> {
+                    if (!stop) {
+                        try {
+                            logger.info("Resetting database");
 
-                        authDB.resetDB();
-                    } catch ( Exception e ) {
-                        logger.error("Scheduler failed " + e.getMessage());
+                            authDB.resetDB();
+                        } catch (Exception e) {
+                            logger.error("Scheduler failed " + e.getMessage());
+                        }
                     }
-                }
-            };
+                };
 
-            executor.scheduleAtFixedRate ( r , 0L , resetCount , timeUnit );
+                executor.scheduleAtFixedRate(r, 0L, resetCount, timeUnit);
+            }
         } else {
             logger.info("No env var was set for DB refresh (or set as 0) so not running DB reset");
         }

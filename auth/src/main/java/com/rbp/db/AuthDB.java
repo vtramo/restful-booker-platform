@@ -49,6 +49,7 @@ public class AuthDB {
 
     public Boolean insertToken(Token token) throws SQLException {
         PreparedStatement createPs = token.getPreparedStatement(connection);
+        createPs.closeOnCompletion();
 
         return createPs.executeUpdate() > 0;
     }
@@ -58,6 +59,7 @@ public class AuthDB {
         ps.setString(1, token.getToken());
 
         ResultSet result = ps.executeQuery();
+        ps.close();
 
         if (result.next()) {
             return new Token(result.getString("token"), getLocalDateTimeFromQueryTokenResult(result));
@@ -75,6 +77,7 @@ public class AuthDB {
         ps.setString(1, token.getToken());
 
         int resultSet = ps.executeUpdate();
+        ps.close();
         return resultSet == 1;
     }
 
@@ -84,6 +87,7 @@ public class AuthDB {
         ps.setString(2, auth.getPassword());
 
         ResultSet result = ps.executeQuery();
+        ps.close();
         result.next();
 
         return result.getRow() > 0;
@@ -98,12 +102,15 @@ public class AuthDB {
             sb.append(sc.nextLine());
         }
 
-        connection.prepareStatement(sb.toString()).executeUpdate();
+        PreparedStatement preparedStatement = connection.prepareStatement(sb.toString());
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
     }
 
     public void resetDB() throws SQLException, IOException {
         PreparedStatement ps = connection.prepareStatement(DELETE_ALL_TOKENS);
         ps.executeUpdate();
+        ps.close();
 
         executeSqlFile("seed.sql");
     }
