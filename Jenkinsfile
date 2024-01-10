@@ -17,12 +17,14 @@ pipeline {
 
     stages {
         stage('Get git commit info') {
-            script {
-                env.GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
-                env.GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
-                env.GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
-                env.GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
-                env.GIT_COMMIT_MSG = sh (script: "git log --format=%B -n 1 ${GIT_COMMIT}", returnStdout: true)
+            steps {
+                script {
+                    env.GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+                    env.GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
+                    env.GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
+                    env.GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
+                    env.GIT_COMMIT_MSG = sh (script: "git log --format=%B -n 1 ${GIT_COMMIT}", returnStdout: true)
+                }
             }
         }
 
