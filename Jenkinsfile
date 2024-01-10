@@ -7,6 +7,8 @@ pipeline {
         DOCKER_REGISTRY_URL = 'localhost:5000'
         GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
         GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
+        GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
+        GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
     }
 
     options {
