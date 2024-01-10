@@ -10,6 +10,7 @@ pipeline {
     }
 
     options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '100', daysToKeepStr: '', numToKeepStr: '100')
         timestamps()
         skipStagesAfterUnstable()
         parallelsAlwaysFailFast()
@@ -84,15 +85,19 @@ pipeline {
                             steps {
                                 dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
                                     withSonarQubeEnv(installationName: 'sonarqube') {
-                                        sh 'mvn sonar:sonar'
+                                        sh '''
+                                            mvn sonar:sonar \
+                                                -Dsonar.projectKey=restful-booker-platform-auth \
+                                                -Dsonar.projectName=restful-booker-platform-auth \
+                                        '''
                                     }
                                 }
                             }
                         }
 
-                        stage('[auth] Quality Gate') {
+                        stage('[auth] Quality Gates') {
                             steps {
-                                timeout(time: 2, unit: 'MINUTES') {
+                                timeout(time: 1, unit: 'MINUTES') {
                                     waitForQualityGate abortPipeline: true
                                 }
                             }
