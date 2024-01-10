@@ -5,10 +5,6 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY_URL = 'localhost:5000'
-        GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
-        GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
-        GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
-        GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
     }
 
     options {
@@ -20,6 +16,16 @@ pipeline {
     }
 
     stages {
+        stage('Get git commit info') {
+            script {
+                env.GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+                env.GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
+                env.GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
+                env.GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
+                env.GIT_COMMIT_MSG = sh (script: "git log --format=%B -n 1 ${GIT_COMMIT}", returnStdout: true)
+            }
+        }
+
         stage('Services Pipeline') {
             parallel {
                 stage('Mine Repository') {
@@ -202,8 +208,9 @@ pipeline {
                                 message: """
                                     :white_check_mark: [auth] Build was successful!
                                     *Branch:* ${GIT_BRANCH}
-                                    *Commit Time:* ${GIT_COMMIT}
+                                    *Commit ID:* ${GIT_COMMIT}
                                     *Short commit ID:* ${GIT_SHORT_COMMIT}
+                                    *Commit message:* ${GIT_COMMIT_MSG}
                                     *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
                                     *Committer name:* ${GIT_COMMITTER_NAME}
                                     *Committer email:* ${GIT_COMMITTER_EMAIL}
@@ -221,8 +228,9 @@ pipeline {
                                 message: """
                                     :x: [auth] Build failed!
                                     *Branch:* ${GIT_BRANCH}
-                                    *Commit Time:* ${GIT_COMMIT}
+                                    *Commit ID:* ${GIT_COMMIT}
                                     *Short commit ID:* ${GIT_SHORT_COMMIT}
+                                    *Commit message:* ${GIT_COMMIT_MSG}
                                     *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
                                     *Committer name:* ${GIT_COMMITTER_NAME}
                                     *Committer email:* ${GIT_COMMITTER_EMAIL}
