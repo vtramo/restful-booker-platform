@@ -19,11 +19,13 @@ pipeline {
         stage('Get git commit info') {
             steps {
                 script {
-                    env.GIT_SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
-                    env.GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = "${GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]}"
-                    env.GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${GIT_COMMIT}", returnStdout: true)
-                    env.GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${GIT_COMMIT}", returnStdout: true)
-                    env.GIT_COMMIT_MSG = sh (script: "git log --format=%B -n 1 ${GIT_COMMIT}", returnStdout: true)
+                    env.GIT_COMMIT = sh (script: 'git rev-parse HEAD', returnStdout: true)
+                    env.GIT_SHORT_COMMIT = "${env.GIT_COMMIT[0..7]}"
+                    env.GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT = scmVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT[0..7]
+                    env.GIT_BRANCH = scmVars.GIT_BRANCH
+                    env.GIT_COMMITTER_NAME = sh (script: "git show -s --format='%an' ${env.GIT_COMMIT}", returnStdout: true)
+                    env.GIT_COMMITTER_EMAIL = sh (script: "git show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                    env.GIT_COMMIT_MSG = sh (script: "git log --format=%B -n 1 ${env.GIT_COMMIT}", returnStdout: true)
                 }
             }
         }
