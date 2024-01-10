@@ -14,8 +14,7 @@ public class Auth {
         this.password = password;
     }
 
-    public Auth() {
-    }
+    public Auth() {}
 
     public String getUsername() {
         return username;
