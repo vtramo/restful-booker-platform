@@ -196,23 +196,41 @@ pipeline {
                         }
 
                         success {
-                            script{
-                                slackSend(
-                                    channel: "ci",
-                                    color: 'good',
-                                    message: """
-                                        :white_check_mark: Auth Service build was successful! 
-                                        *Branch:* ${GIT_BRANCH}
-                                        *Commit Time:* ${GIT_COMMIT}
-                                        *Short commit ID:* ${GIT_SHORT_COMMIT}
-                                        *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
-                                        *Committer:* ${GIT_COMMITTER_NAME} (${GIT_COMMITTER_EMAIL})
-                                        *Author:* ${GIT_AUTHOR_NAME} (${GIT_AUTHOR_EMAIL})
-                                        *Build label:* ${BUILD_TAG}
-                                        *Build ID:* ${BUILD_ID}
-                                    """
-                                )
-                            }
+                            slackSend(
+                                channel: "ci",
+                                color: 'good',
+                                message: """
+                                    :white_check_mark: [auth] Build was successful!
+                                    *Branch:* ${GIT_BRANCH}
+                                    *Commit Time:* ${GIT_COMMIT}
+                                    *Short commit ID:* ${GIT_SHORT_COMMIT}
+                                    *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
+                                    *Committer name:* ${GIT_COMMITTER_NAME}
+                                    *Committer email:* ${GIT_COMMITTER_EMAIL}
+                                    *Build label:* ${BUILD_TAG}
+                                    *Build ID:* ${BUILD_ID}
+                                    *Build URL:* ${BUILD_URL}
+                                """
+                            )
+                        }
+
+                        failure {
+                            slackSend(
+                                channel: "ci",
+                                color: 'danger',
+                                message: """
+                                    :x: [auth] Build failed!
+                                    *Branch:* ${GIT_BRANCH}
+                                    *Commit Time:* ${GIT_COMMIT}
+                                    *Short commit ID:* ${GIT_SHORT_COMMIT}
+                                    *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
+                                    *Committer name:* ${GIT_COMMITTER_NAME}
+                                    *Committer email:* ${GIT_COMMITTER_EMAIL}
+                                    *Build label:* ${BUILD_TAG}
+                                    *Build ID:* ${BUILD_ID}
+                                    *Build URL:* ${BUILD_URL}
+                                """
+                            )
                         }
                     }
                 }
