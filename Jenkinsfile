@@ -194,21 +194,23 @@ pipeline {
                         }
 
                         success {
-                            slackSend(
-                                channel: "ci",
-                                color: 'good',
-                                message: """
-                                    :white_check_mark: Auth Service build was successful! 
-                                    *Branch:* ${GIT_BRANCH}
-                                    *Commit Time:* ${GIT_COMMIT}
-                                    *Short commit ID:* ${GIT_SHORT_COMMIT}
-                                    *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
-                                    *Committer:* ${GIT_COMMITTER_NAME} (${GIT_COMMITTER_EMAIL})
-                                    *Author:* ${GIT_AUTHOR_NAME} (${GIT_AUTHOR_EMAIL})
-                                    *Build label:* ${BUILD_TAG}
-                                    *Build ID:* ${BUILD_ID}
-                                """
-                            )
+                            script{
+                                slackSend(
+                                    channel: "ci",
+                                    color: 'good',
+                                    message: """
+                                        :white_check_mark: Auth Service build was successful! 
+                                        *Branch:* ${GIT_BRANCH}
+                                        *Commit Time:* ${GIT_COMMIT}
+                                        *Short commit ID:* ${GIT_SHORT_COMMIT}
+                                        *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
+                                        *Committer:* ${GIT_COMMITTER_NAME} (${GIT_COMMITTER_EMAIL})
+                                        *Author:* ${GIT_AUTHOR_NAME} (${GIT_AUTHOR_EMAIL})
+                                        *Build label:* ${BUILD_TAG}
+                                        *Build ID:* ${BUILD_ID}
+                                    """
+                                )
+                            }
                         }
                     }
                 }
