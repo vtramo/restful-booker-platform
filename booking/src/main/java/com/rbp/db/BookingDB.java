@@ -80,9 +80,11 @@ public class BookingDB {
 
     public List<Booking> queryBookingsById(String roomid) throws SQLException {
         List<Booking> listToReturn = new ArrayList<Booking>();
-        String sql = "SELECT * FROM BOOKINGS WHERE roomid = " + roomid;
+        String sql = "SELECT * FROM BOOKINGS WHERE roomid = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, roomid);
 
-        ResultSet results = connection.prepareStatement(sql).executeQuery();
+        ResultSet results = ps.executeQuery();
         while(results.next()){
             listToReturn.add(new Booking(results));
         }
