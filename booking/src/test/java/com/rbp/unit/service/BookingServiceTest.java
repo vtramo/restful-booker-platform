@@ -74,7 +74,7 @@ public class BookingServiceTest {
         when(bookingDB.queryBookingsById("2")).thenReturn(bookings);
         when(authRequests.postCheckAuth("abc123")).thenReturn(true);
 
-        Optional<String> roomid = Optional.of("2");
+        Optional<String> roomid = Optional.of("100 or 50=50");
 
         BookingResult bookingResults = bookingService.getBookings(roomid, "abc123");
 

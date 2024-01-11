@@ -44,8 +44,10 @@ public class BookingService {
 
             if(roomId.isPresent()){
                 bookingList = bookingDB.queryBookingsById(roomId.get());
+                System.out.println("\nENTRATO NEL QUERY SINGLE BOOKING");
             } else {
                 bookingList = bookingDB.queryAllBookings();
+                System.out.println("\nENTRATO NEL QUERY ALL BOOKINGS");
             }
 
             return new BookingResult(new Bookings(bookingList), HttpStatus.OK);
