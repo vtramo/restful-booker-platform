@@ -31,7 +31,7 @@ public class MessageRequests {
         try{
             ResponseEntity<String> response = restTemplate.exchange(host + "/message/", HttpMethod.POST, httpEntity, String.class);
             return response.getStatusCodeValue() == 200;
-        } catch (HttpClientErrorException e){
+        } catch (Exception e){
             return false;
         }
     }
