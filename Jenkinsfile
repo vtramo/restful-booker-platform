@@ -325,25 +325,25 @@ pipeline {
                             }
                         }
 
-                        stage('[auth] SonarQube Scan') {
+                        stage('[booking] SonarQube Scan') {
                             options {
                                 timeout(time: 1, unit: 'MINUTES')
                             }
 
                             steps {
-                                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
                                     withSonarQubeEnv(installationName: 'sonarqube') {
                                         sh '''
                                             mvn sonar:sonar \
-                                                -Dsonar.projectKey=restful-booker-platform-auth \
-                                                -Dsonar.projectName=restful-booker-platform-auth \
+                                                -Dsonar.projectKey=restful-booker-platform-booking \
+                                                -Dsonar.projectName=restful-booker-platform-booking \
                                         '''
                                     }
                                 }
                             }
                         }
 
-                        stage('[auth] Quality Gates') {
+                        stage('[booking] Quality Gates') {
                             steps {
                                 timeout(time: 1, unit: 'MINUTES') {
                                     waitForQualityGate abortPipeline: true
@@ -351,13 +351,13 @@ pipeline {
                             }
                         }
 
-                        stage('[auth] Build Image') {
+                        stage('[booking] Build Image') {
                             options {
                                 timeout(time: 30, unit: 'SECONDS')
                             }
 
                             steps {
-                                dir("${RBP_AUTH_SERVICE_MAIN_DIR}") {
+                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
                                     sh '''
                                         docker build \
                                             --build-arg BUILD_NUMBER=${BUILD_NUMBER} \
