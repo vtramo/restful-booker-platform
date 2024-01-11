@@ -50,8 +50,9 @@
                 <version>2.22.0</version>
                 <configuration>
                     <includes>
-                        <include>**/*IT</include>
+                        <include>**/*UT</include>
                     </includes>
+                    <skipTests>${skip.surefire.tests}</skipTests>
                 </configuration>
             </plugin>
             <plugin>
@@ -65,6 +66,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <includes>
+                        <include>**/*IT</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

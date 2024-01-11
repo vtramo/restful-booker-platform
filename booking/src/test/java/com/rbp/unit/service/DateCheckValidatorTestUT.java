@@ -9,7 +9,7 @@ import java.sql.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class DateCheckValidatorTest {
+public class DateCheckValidatorTestUT {
 
     private DateCheckValidator dateCheckValidator;
     private BookingDates bookingDates;

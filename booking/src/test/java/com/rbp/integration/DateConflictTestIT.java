@@ -1,4 +1,4 @@
-package com.rbp.unit.db;
+package com.rbp.integration;
 
 import com.rbp.model.db.Booking;
 import com.rbp.model.db.CreatedBooking;
@@ -14,7 +14,7 @@ import java.time.Month;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class DateConflictTest extends BaseTest {
+public class DateConflictTestIT extends BaseTest {
 
     @BeforeEach
     public void resetDb() throws SQLException, IOException {

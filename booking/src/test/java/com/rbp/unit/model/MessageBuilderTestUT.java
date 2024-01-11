@@ -11,7 +11,7 @@ import java.time.Month;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MessageBuilderTest {
+public class MessageBuilderTestUT {
 
     @Test
     public void messageBuiltFromBookingTest(){

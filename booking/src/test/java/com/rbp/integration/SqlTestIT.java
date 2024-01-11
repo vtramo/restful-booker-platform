@@ -1,4 +1,4 @@
-package com.rbp.unit.examples;
+package com.rbp.integration;
 
 import com.rbp.model.db.Booking;
 import com.rbp.model.db.CreatedBooking;
@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 // This test class extends the class BaseTest meaning we can inherit
 // an instance of BookingDB to use in this class
-public class SqlTest extends BaseTest {
+public class SqlTestIT extends BaseTest {
 
     // We need to create a couple of private variables that
     // we will use across multiple tests
