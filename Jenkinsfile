@@ -1,3 +1,4 @@
+@Library('rbp-jenkins-shared-library') _
 pipeline {
     agent {
         label 'build-agent'
@@ -39,7 +40,13 @@ pipeline {
 
                 stage('Auth Service') {
                     steps {
-                        rbpServicePipeline serviceName: 'auth'
+                        rbpServicePipeline(serviceName: 'auth')
+                    }
+                }
+
+                stage('Booking Service') {
+                    steps {
+                        rbpServicePipeline(serviceName: 'booking', skipPerformanceTests: true)
                     }
                 }
 
@@ -65,221 +72,13 @@ pipeline {
 
                             steps {
                                 dir("${RBP_ROOM_SERVICE_MAIN_DIR}") {
-                                     sh 'mvn clean package -DskipTests'
+                                    sh 'mvn clean package -DskipTests'
                                 }
                             }
                         }
                     }
                 }
 
-                stage('Booking Service') {
-                    when {
-                        anyOf {
-                            changeset "booking/Dockerfile"
-                            changeset "booking/src/main/java/**/*.java"
-                            changeset "booking/src/test/java/**/*.java"
-                        }
-                    }
-
-                    environment {
-                        RBP_BOOKING_SERVICE_MAIN_DIR = 'booking'
-                        RBP_BOOKING_SERVICE_CI_DIR = 'booking/ci'
-                    }
-
-                    stages {
-                        stage('[booking] Build') {
-                            options {
-                                timeout(time: 3, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                     sh 'mvn clean package -DskipTests'
-                                }
-                            }
-                        }
-                        
-                        stage('[booking] Unit Tests') {
-                            options {
-                                timeout(time: 20, unit: 'SECONDS')
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                    sh 'mvn test'
-                                }
-                            }
-                        }
-
-                        stage('[booking] Integration Tests') {
-                            options {
-                                timeout(time: 40, unit: 'SECONDS')
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                    sh 'mvn verify -Dskip.surefire.tests=true'
-                                }
-                            }
-                        }
-
-                        stage('[booking] SonarQube Scan') {
-                            options {
-                                timeout(time: 1, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                    withSonarQubeEnv(installationName: 'sonarqube') {
-                                        sh '''
-                                            mvn sonar:sonar \
-                                                -Dsonar.projectKey=restful-booker-platform-booking \
-                                                -Dsonar.projectName=restful-booker-platform-booking \
-                                        '''
-                                    }
-                                }
-                            }
-                        }
-
-                        stage('[booking] Quality Gates') {
-                            steps {
-                                timeout(time: 1, unit: 'MINUTES') {
-                                    waitForQualityGate abortPipeline: true
-                                }
-                            }
-                        }
-
-                        stage('[booking] Build Image') {
-                            options {
-                                timeout(time: 30, unit: 'SECONDS')
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                    sh '''
-                                        docker build \
-                                            --build-arg BUILD_NUMBER=${BUILD_NUMBER} \
-                                            --build-arg BUILD_TAG=${BUILD_TAG} \
-                                            --build-arg GIT_COMMIT=${GIT_COMMIT} \
-                                            -t ${DOCKER_REGISTRY_URL}/rbp-auth:${GIT_SHORT_COMMIT} .
-                                    '''
-                                }
-                            }
-                        }
-
-                        /*stage('[auth] Performance Tests') {
-                            options {
-                                timeout(time: 1, unit: 'MINUTES')
-                            }
-
-                            environment {
-                                RBP_BOOKING_SERVICE_HOSTNAME = 'rbp-booking'
-                                RBP_BOOKING_SERVICE_PORT = '3000'
-                                RBP_BOOKING_SERVICE_DOCKER_IMAGE_TAG = "${GIT_SHORT_COMMIT}"
-                            }
-
-                            steps {
-                                dir("${RBP_BOOKING_SERVICE_CI_DIR}") {
-                                    sh 'docker compose -f docker-compose-test.yaml up -d --build --wait'
-                                    bzt """-o settings.env.JMETER_HOME=${JMETER_HOME} \
-                                        -o settings.env.RBP_BOOKING_SERVICE_HOSTNAME=${RBP_BOOKING_SERVICE_HOSTNAME} \
-                                        -o settings.env.RBP_BOOKING_SERVICE_PORT=${RBP_BOOKING_SERVICE_PORT} \
-                                        performance-test.yaml"""
-                                }
-                            }
-                        }*/
-
-                        stage('[booking] Push Image') {
-                            when {
-                              expression {
-                                currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                              }
-                            }
-
-                            options {
-                                timeout(time: 30, unit: 'SECONDS')
-                            }
-
-                            steps {
-                                sh 'docker push ${DOCKER_REGISTRY_URL}/rbp-booking:${GIT_SHORT_COMMIT}'
-                            }
-                        }
-                    }
-
-                    post {
-                        always {
-                            dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
-                                junit(
-                                    testResults: 'target/surefire-reports/**/*.xml,target/failsafe-reports/**/*.xml',
-                                    allowEmptyResults: true
-                                )
-                                jacoco(
-                                    execPattern: 'target/**/*.exec',
-                                    classPattern: 'target/classes/com/rbp',
-                                    sourcePattern: 'src/main/java/com/rbp'
-                                )
-                                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-                                recordIssues(
-                                    enabledForFailure: true, aggregatingResults: true,
-                                    tools: [
-                                        java(),
-                                        junitParser(name: 'Unit Test Warnings',
-                                                    pattern: 'target/surefire-reports/**/*.xml'),
-                                        junitParser(name: 'Integration Test Warnings',
-                                                    pattern: 'target/failsafe-reports/**/*.xml')
-                                    ]
-                                )
-                            }
-
-                            dir("${RBP_BOOKING_SERVICE_CI_DIR}") {
-                                sh '''
-                                    docker compose -f docker-compose-test.yaml logs && \
-                                    docker compose -f docker-compose-test.yaml down --volumes
-                                '''
-                            }
-                        }
-
-                        success {
-                            slackSend(
-                                channel: "ci",
-                                color: 'good',
-                                message: """
-                                    :white_check_mark: [booking] Build was successful!
-                                    *Branch:* ${GIT_BRANCH}
-                                    *Commit ID:* ${GIT_COMMIT}
-                                    *Short commit ID:* ${GIT_SHORT_COMMIT}
-                                    *Commit message:* ${GIT_COMMIT_MSG}
-                                    *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
-                                    *Committer name:* ${GIT_COMMITTER_NAME}
-                                    *Committer email:* ${GIT_COMMITTER_EMAIL}
-                                    *Build label:* ${BUILD_TAG}
-                                    *Build ID:* ${BUILD_ID}
-                                    *Build URL:* ${BUILD_URL}
-                                """
-                            )
-                        }
-
-                        failure {
-                            slackSend(
-                                channel: "ci",
-                                color: 'danger',
-                                message: """
-                                    :x: [booking] Build failed!
-                                    *Branch:* ${GIT_BRANCH}
-                                    *Commit ID:* ${GIT_COMMIT}
-                                    *Short commit ID:* ${GIT_SHORT_COMMIT}
-                                    *Commit message:* ${GIT_COMMIT_MSG}
-                                    *Previous successful commit ID:* ${GIT_PREVIOUS_SUCCESSFUL_SHORT_COMMIT} 
-                                    *Committer name:* ${GIT_COMMITTER_NAME}
-                                    *Committer email:* ${GIT_COMMITTER_EMAIL}
-                                    *Build label:* ${BUILD_TAG}
-                                    *Build ID:* ${BUILD_ID}
-                                    *Build URL:* ${BUILD_URL}
-                                """
-                            )
-                        }
-                    }
-                }
 
                 stage('Branding Service') {
                     when {

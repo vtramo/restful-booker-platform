@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   rbp-auth:
-    image: ${DOCKER_REGISTRY_URL-}/rbp-auth:${RBP_AUTH_SERVICE_DOCKER_IMAGE_TAG:-latest}
+    image: ${DOCKER_REGISTRY_URL-}/rbp-auth:${RBP_SERVICE_DOCKER_IMAGE_TAG:-latest}
     networks:
       - jenkins
     environment:
@@ -10,7 +10,7 @@ services:
       AUTH_DB_JDBC_USERNAME: postgres
       AUTH_DB_JDBC_PASSWORD: postgres
     ports:
-      - "${RBP_AUTH_SERVICE_PORT}:3004"
+      - "${RBP_SERVICE_PORT}:3004"
     depends_on:
       postgres:
         condition: service_started
