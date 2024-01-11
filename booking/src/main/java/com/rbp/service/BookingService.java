@@ -88,7 +88,6 @@ public class BookingService {
                     return new BookingResult(HttpStatus.CONFLICT);
                 } else {
                     CreatedBooking updatedBooking = bookingDB.update(bookingId, bookingToUpdate);
-
                     if(updatedBooking != null){
                         return new BookingResult(updatedBooking,  HttpStatus.OK);
                     } else {
