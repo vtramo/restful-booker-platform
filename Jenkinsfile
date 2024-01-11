@@ -300,6 +300,18 @@ pipeline {
                                 }
                             }
                         }
+                        
+                        stage('[booking] Unit Tests') {
+                            options {
+                                timeout(time: 20, unit: 'SECONDS')
+                            }
+
+                            steps {
+                                dir("${RBP_BOOKING_SERVICE_MAIN_DIR}") {
+                                    sh 'mvn test'
+                                }
+                            }
+                        }
                     }
                 }
 
