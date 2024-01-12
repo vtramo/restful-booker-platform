@@ -1,1 +1,1 @@
-CREATE TABLE BOOKINGS ( bookingid int NOT NULL AUTO_INCREMENT, roomid int, firstname varchar(255), lastname varchar(255), depositpaid boolean, checkin date, checkout date, primary key (bookingid));
+CREATE TABLE IF NOT EXISTS BOOKINGS ( bookingid int NOT NULL AUTO_INCREMENT, roomid int, firstname varchar(255), lastname varchar(255), depositpaid boolean, checkin date, checkout date, primary key (bookingid));
