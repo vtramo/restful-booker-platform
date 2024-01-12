@@ -219,4 +219,10 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            rbpSendSlackNotification()
+        }
+    }
 }
