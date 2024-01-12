@@ -3,7 +3,7 @@ services:
   rbp-booking:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-booking
+    image: ${DOCKER_REGISTRY_URL-}rbp-booking:latest
     environment:
       - MESSAGE_SERVICE_URL=rbp-message
     ports:
@@ -18,7 +18,7 @@ services:
   rbp-room:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-room
+    image: ${DOCKER_REGISTRY_URL-}rbp-room:latest
     environment:
         ROOM_DB_JDBC_URL: "jdbc:postgresql://postgres:5432/test?loggerLevel=OFF"
         ROOM_DB_JDBC_USERNAME: "postgres"
@@ -35,7 +35,7 @@ services:
   rbp-branding:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-branding
+    image: ${DOCKER_REGISTRY_URL-}rbp-branding:latest
     ports:
       - "3002:3002"
     depends_on:
@@ -46,7 +46,7 @@ services:
   rbp-assets:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-assets
+    image: ${DOCKER_REGISTRY_URL-}rbp-assets:latest
     ports:
       - "3003:3003"
     depends_on:
@@ -57,7 +57,7 @@ services:
   rbp-auth:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-auth
+    image: ${DOCKER_REGISTRY_URL-}rbp-auth:latest
     environment:
         AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
         AUTH_DB_JDBC_USERNAME: postgres
@@ -72,7 +72,7 @@ services:
   rbp-report:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-report
+    image: ${DOCKER_REGISTRY_URL-}rbp-report:latest
     environment:
       - BOOKING_SERVICE_URL=rbp-booking
       - ROOM_SERVICE_URL=rbp-room
@@ -88,7 +88,7 @@ services:
   rbp-message:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}rbp-message
+    image: ${DOCKER_REGISTRY_URL-}rbp-message:latest
     ports:
       - "3006:3006"
     depends_on:
