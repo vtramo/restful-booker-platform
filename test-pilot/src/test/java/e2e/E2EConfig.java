@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class E2EConfig {
 
+    private static String DOCKER_REGISTRY_URL = Optional.ofNullable(System.getenv("DOCKER_REGISTRY_URL")).orElse("localhost:5000");
     public static String RBP_PROXY_URL = Optional.ofNullable(System.getenv("RBP_PROXY_URL")).orElse("http://localhost:8080");
 
     private static final File DOCKER_COMPOSE_FILE = new File("src/test/resources/docker/docker-compose-test.yaml");
@@ -17,6 +18,7 @@ public class E2EConfig {
     public static void setupServices() {
         DockerComposeContainer<?> compose =
             new DockerComposeContainer<>(DOCKER_COMPOSE_FILE)
+                .withEnv("DOCKER_REGISTRY_URL", DOCKER_REGISTRY_URL)
                 .waitingFor("rbp-proxy", Wait.defaultWaitStrategy())
                 .withBuild(true)
 		        .withExposedService("rbp-proxy", 8080)
