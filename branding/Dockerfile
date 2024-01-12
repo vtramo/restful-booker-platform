@@ -1,16 +1,25 @@
-FROM openjdk:15-slim
+ARG JAVA_VERSION=17
+FROM openjdk:${JAVA_VERSION}-slim
 
-ADD . /usr/local/branding
+RUN apt-get update && apt-get -y install curl
 
-WORKDIR /usr/local/branding
+COPY ./target/restful-booker-platform-branding-*.jar ./target/
 
 ENV PROFILE=dev
-ENV AUTH_SERVICE_URL=localhost:3004
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} \
+    ./target/restful-booker-platform-branding-*.jar
 
-RUN apt-get update && apt-get install dos2unix
-RUN dos2unix mvnw
-RUN chmod +x mvnw
-RUN ./mvnw -DskipTests=true -q clean package
-
-ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} -Dhoneycomb.beeline.write-key=${HONEYCOMB_API_KEY} target/restful-booker-platform-branding-*.jar -D
 EXPOSE 3002
+HEALTHCHECK \
+    --interval=5s \
+    --timeout=5s  \
+    --retries=3   \
+    CMD curl http://localhost:3002/branding/actuator/health
+
+ARG BUILD_NUMBER=0
+ARG BUILD_TAG=local
+ARG GIT_COMMIT=local
+
+LABEL build_number=${BUILD_NUMBER}
+LABEL build_tag=${BUILD_TAG}
+LABEL git_commit=${GIT_COMMIT}
