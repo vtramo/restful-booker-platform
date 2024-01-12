@@ -170,14 +170,12 @@ pipeline {
 
             steps {
                 dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                    script{
-                        sh '''
-                            mvn clean package
-                        '''
-                        sh '''
-                            mvn test -Dcucumber.features=src/test/resources
-                        '''
-                    }
+                    sh '''
+                        mvn clean package
+                    '''
+                    sh '''
+                        mvn test -Dcucumber.features=src/test/resources
+                    '''
                 }
             }
         }
