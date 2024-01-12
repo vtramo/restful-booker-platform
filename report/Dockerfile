@@ -1,16 +1,25 @@
-FROM openjdk:15-slim
+ARG JAVA_VERSION=17
+FROM openjdk:${JAVA_VERSION}-slim
 
-ADD . /usr/local/report
+RUN apt-get update && apt-get -y install curl
 
-WORKDIR /usr/local/report
+COPY ./target/restful-booker-platform-report-*.jar ./target/
 
-ENV ROOM_SERVICE_URL=localhost:3001
-ENV BOOKING_SERVICE_URL=localhost:3000
 ENV PROFILE=dev
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} \
+    ./target/restful-booker-platform-report-*.jar
 
-RUN apt-get update && apt-get install dos2unix
-RUN dos2unix mvnw
-RUN chmod +x mvnw
-RUN ./mvnw -DskipTests=true -q clean package
+EXPOSE 3005
+HEALTHCHECK \
+    --interval=5s \
+    --timeout=5s  \
+    --retries=3   \
+    CMD curl http://localhost:3005/report/actuator/health
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE target/restful-booker-platform-report-*.jar -D
+ARG BUILD_NUMBER=0
+ARG BUILD_TAG=local
+ARG GIT_COMMIT=local
+
+LABEL build_number=${BUILD_NUMBER}
+LABEL build_tag=${BUILD_TAG}
+LABEL git_commit=${GIT_COMMIT}
