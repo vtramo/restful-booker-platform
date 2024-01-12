@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_REGISTRY_URL = 'localhost:5000/'
+        DOCKER_REGISTRY_URL = 'localhost:5000'
     }
 
     options {
