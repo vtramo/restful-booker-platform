@@ -170,8 +170,14 @@ pipeline {
 
             steps {
                 dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                     sh 'ls'
-                     sh 'printenv'
+                    script{
+                        sh '''
+                            mvn clean package
+                        '''
+                        sh '''
+                            mvn test -Dcucumber.features=src/test/resources
+                        '''
+                    }
                 }
             }
         }
