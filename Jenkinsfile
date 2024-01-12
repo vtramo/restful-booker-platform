@@ -162,16 +162,17 @@ pipeline {
         stage('E2E Tests') {
             environment {
                 RBP_TEST_PILOT_MAIN_DIR = 'test-pilot'
+                RBP_PROXY_URL = 'http://rbp-proxy:8080'
             }
 
             options {
-                timeout(time: 3, unit: 'MINUTES')
+                timeout(time: 1, unit: 'MINUTES')
             }
 
             steps {
                 dir("${RBP_TEST_PILOT_MAIN_DIR}") {
                     sh '''
-                        mvn test -Dcucumber.features=src/test/resources
+                        mvn clean test -Dcucumber.features=src/test/resources
                     '''
                 }
             }
