@@ -38,12 +38,6 @@ pipeline {
 
         stage('Services Pipeline') {
             parallel {
-                stage('Mine Repository') {
-                    steps {
-                        mineRepository()
-                    }
-                }
-
                 stage('Auth Service') {
                     when {
                         anyOf {
@@ -63,6 +57,26 @@ pipeline {
                     }
                 }
 
+                stage('Room Service') {
+                    when {
+                        anyOf {
+                            changeset "room/Dockerfile"
+                            changeset "room/src/main/java/**/*.java"
+                            changeset "room/src/test/java/**/*.java"
+                        }
+                    }
+
+                    steps {
+                        rbpServicePipeline(
+                            serviceName: 'room',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-room',
+                            rbpServicePort: '3001',
+                            skipPerformanceTests: true
+                        )
+                    }
+                }
+
                 stage('Booking Service') {
                     when {
                         anyOf {
@@ -77,41 +91,11 @@ pipeline {
                             serviceName: 'booking',
                             nodeLabel: 'build-agent',
                             rbpServiceHostname: 'rbp-booking',
-                            rbpServicePort: '3005',
+                            rbpServicePort: '3000',
                             skipPerformanceTests: true
                         )
                     }
                 }
-
-                stage('Room Service') {
-                    when {
-                        anyOf {
-                            changeset "room/Dockerfile"
-                            changeset "room/src/main/java/**/*.java"
-                            changeset "room/src/test/java/**/*.java"
-                        }
-                    }
-
-                    environment {
-                        RBP_ROOM_SERVICE_MAIN_DIR = 'room'
-                        RBP_ROOM_SERVICE_CI_DIR = 'room/ci'
-                    }
-
-                    stages {
-                        stage('[room] Build') {
-                            options {
-                                timeout(time: 3, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_ROOM_SERVICE_MAIN_DIR}") {
-                                    sh 'mvn clean package -DskipTests'
-                                }
-                            }
-                        }
-                    }
-                }
-
 
                 stage('Branding Service') {
                     when {
@@ -122,23 +106,14 @@ pipeline {
                         }
                     }
 
-                    environment {
-                        RBP_BRANDING_SERVICE_MAIN_DIR = 'branding'
-                        RBP_BRANDING_SERVICE_CI_DIR = 'branding/ci'
-                    }
-
-                    stages {
-                        stage('[branding] Build') {
-                            options {
-                                timeout(time: 3, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_BRANDING_SERVICE_MAIN_DIR}") {
-                                     sh 'mvn clean package -DskipTests'
-                                }
-                            }
-                        }
+                    steps {
+                        rbpServicePipeline(
+                            serviceName: 'branding',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-branding',
+                            rbpServicePort: '3002',
+                            skipPerformanceTests: true
+                        )
                     }
                 }
 
@@ -151,23 +126,14 @@ pipeline {
                         }
                     }
 
-                    environment {
-                        RBP_MESSAGE_SERVICE_MAIN_DIR = 'message'
-                        RBP_MESSAGE_SERVICE_CI_DIR = 'message/ci'
-                    }
-
-                    stages {
-                        stage('[message] Build') {
-                            options {
-                                timeout(time: 3, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_MESSAGE_SERVICE_MAIN_DIR}") {
-                                     sh 'mvn clean package -DskipTests'
-                                }
-                            }
-                        }
+                    steps {
+                        rbpServicePipeline(
+                            serviceName: 'message',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-message',
+                            rbpServicePort: '3006',
+                            skipPerformanceTests: true
+                        )
                     }
                 }
 
@@ -180,23 +146,14 @@ pipeline {
                         }
                     }
 
-                    environment {
-                        RBP_REPORT_SERVICE_MAIN_DIR = 'report'
-                        RBP_REPORT_SERVICE_CI_DIR = 'report/ci'
-                    }
-
-                    stages {
-                        stage('[report] Build') {
-                            options {
-                                timeout(time: 3, unit: 'MINUTES')
-                            }
-
-                            steps {
-                                dir("${RBP_REPORT_SERVICE_MAIN_DIR}") {
-                                     sh 'mvn clean package -DskipTests'
-                                }
-                            }
-                        }
+                    steps {
+                        rbpServicePipeline(
+                            serviceName: 'report',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-report',
+                            rbpServicePort: '3005',
+                            skipPerformanceTests: true
+                        )
                     }
                 }
             }
