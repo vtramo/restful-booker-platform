@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class ReportServiceTest {
+public class ReportServiceUT {
 
     @Mock
     private RoomRequests roomRequests;

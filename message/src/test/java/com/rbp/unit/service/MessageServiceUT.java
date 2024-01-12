@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-public class MessageServiceTest {
+public class MessageServiceUT {
 
     @Mock
     private MessageDB messageDB;

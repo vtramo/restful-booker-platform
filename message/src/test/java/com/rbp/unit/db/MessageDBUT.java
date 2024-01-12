@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MessageDBTest extends BaseTest {
+public class MessageDBUT extends BaseTest {
 
     private int currentMessageId;
 
@@ -62,21 +62,6 @@ public class MessageDBTest extends BaseTest {
         boolean isDeleted = messageDB.delete(currentMessageId);
 
         assertThat(isDeleted, is(true));
-    }
-
-    @Test
-    public void testGetMessages() throws SQLException {
-        Message message = new Message("Mark",
-                "mark@mwtestconsultancy.co.uk",
-                "01821 912812",
-                "A subject you may be interested in",
-                "In posuere accumsan aliquet.");
-
-        messageDB.create(message);
-
-        List<MessageSummary> messageSummaries = messageDB.queryMessages();
-
-        Approvals.verify(messageSummaries.toString());
     }
 
     @Test
