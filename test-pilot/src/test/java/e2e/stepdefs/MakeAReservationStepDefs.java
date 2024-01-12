@@ -13,6 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 import java.time.Duration;
 import java.util.List;
 
+import static e2e.E2EConfig.RBP_PROXY_URL;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -28,7 +29,7 @@ public class MakeAReservationStepDefs {
             .timeouts()
             .implicitlyWait(Duration.ofSeconds(2));
 
-        driver.get("http://localhost:8080");
+        driver.get(RBP_PROXY_URL);
     }
 
     @When("I make a booking")

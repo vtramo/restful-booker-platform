@@ -5,8 +5,11 @@ import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.io.File;
+import java.util.Optional;
 
 public class E2EConfig {
+
+    public static String RBP_PROXY_URL = Optional.ofNullable(System.getenv("RBP_PROXY_URL")).orElse("http://localhost:8080");
 
     private static final File DOCKER_COMPOSE_FILE = new File("src/test/resources/docker/docker-compose-test.yaml");
 
@@ -16,7 +19,7 @@ public class E2EConfig {
             new DockerComposeContainer<>(DOCKER_COMPOSE_FILE)
                 .waitingFor("rbp-proxy", Wait.defaultWaitStrategy())
                 .withBuild(true)
-		.withExposedService("rbp-proxy", 8080)
+		        .withExposedService("rbp-proxy", 8080)
                 .withExposedService("rbp-booking", 3000)
                 .withExposedService("rbp-room", 3001)
                 .withExposedService("rbp-assets", 3003)
