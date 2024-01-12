@@ -30,6 +30,12 @@ pipeline {
             }
         }
 
+        stage('Stash git repository') {
+            steps {
+                stash includes: '**', name: 'rbp', useDefaultExcludes: false
+            }
+        }
+
         stage('Services Pipeline') {
             parallel {
                 stage('Mine Repository') {
@@ -39,14 +45,41 @@ pipeline {
                 }
 
                 stage('Auth Service') {
+                    when {
+                        anyOf {
+                            changeset "auth/Dockerfile"
+                            changeset "auth/src/main/java/**/*.java"
+                            changeset "auth/src/test/java/**/*.java"
+                        }
+                    }
+
                     steps {
-                        rbpServicePipeline(serviceName: 'auth')
+                        rbpServicePipeline(
+                            serviceName: 'auth',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-auth',
+                            rbpServicePort: '3004'
+                        )
                     }
                 }
 
                 stage('Booking Service') {
+                    when {
+                        anyOf {
+                            changeset "booking/Dockerfile"
+                            changeset "booking/src/main/java/**/*.java"
+                            changeset "booking/src/test/java/**/*.java"
+                        }
+                    }
+
                     steps {
-                        rbpServicePipeline(serviceName: 'booking', skipPerformanceTests: true)
+                        rbpServicePipeline(
+                            serviceName: 'booking',
+                            nodeLabel: 'build-agent',
+                            rbpServiceHostname: 'rbp-booking',
+                            rbpServicePort: '3005',
+                            skipPerformanceTests: true
+                        )
                     }
                 }
 
