@@ -12,11 +12,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -42,7 +45,10 @@ import static io.restassured.parsing.Parser.JSON;
 @ActiveProfiles("test")
 @DisplayName("Room API")
 public class RoomConfigCT {
-
+    static final String JENKINS_NETWORK_ID = "jenkins";
+    static final boolean JENKINS_CI_ENVIRONMENT = Optional.ofNullable(System.getenv("CI"))
+        .map(ci -> ci.equals("true"))
+        .orElse(false);
     static final String AUTH_SERVICE_WIREMOCK_NAME = "auth-service";
     static final String AUTH_SERVICE_WIREMOCK_PROPERTY_URL = "app.auth-service-client-url";
     static final String PG_IS_READY_COMMAND = "pg_isready -U postgres";
@@ -59,6 +65,19 @@ public class RoomConfigCT {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
+        if (JENKINS_CI_ENVIRONMENT) {
+            postgres.withNetwork(new Network() {
+                @Override
+                public String getId() { return JENKINS_NETWORK_ID; }
+                @Override
+                public void close() {}
+
+                @Override
+                public Statement apply(Statement statement, Description description) {
+                    return null;
+                }
+            });
+        }
         postgres.start();
         registry.add("room.db.jdbc-url", postgres::getJdbcUrl);
         registry.add("room.db.jdbc-username", postgres::getUsername);
