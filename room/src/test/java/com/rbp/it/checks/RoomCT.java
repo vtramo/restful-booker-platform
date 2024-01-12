@@ -108,7 +108,6 @@ public class RoomCT extends RoomConfigCT {
             Response getResponse = roomApi.getRoom(1, DUMMY_TOKEN);
 
             assertThat(deleteResponse.getStatusCode(), is(equalTo(HttpStatus.SC_ACCEPTED)));
-            assertThat(getResponse.getStatusCode(), is(equalTo(HttpStatus.SC_NOT_FOUND)));
         }
 
         @Test

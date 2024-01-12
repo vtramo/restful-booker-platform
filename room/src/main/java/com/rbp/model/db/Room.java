@@ -3,6 +3,7 @@ package com.rbp.model.db;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,19 @@ public class Room {
     @NotNull()
     @NotEmpty(message = "Room name must be set")
     private String roomName;
+
+    @JsonProperty
+    private int beds;
+    @Id
+    private Long id;
+
+    public int getBeds() {
+        return beds;
+    }
+
+    public void setBeds(int beds) {
+        this.beds = beds;
+    }
 
     @JsonProperty
     @NotNull(message = "Type must be set")
@@ -57,6 +71,7 @@ public class Room {
     public Room(ResultSet result) throws SQLException {
         this.roomid = result.getInt("roomid");
         this.roomName = result.getString("room_name");
+        this.beds = result.getInt("beds");
         this.type = result.getString("type");
         this.accessible = result.getBoolean("accessible");
         this.image = result.getString("image");
@@ -149,6 +164,14 @@ public class Room {
                 ", features=" + Arrays.toString(features) +
                 ", roomPrice=" + roomPrice +
                 '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public static class RoomBuilder {
