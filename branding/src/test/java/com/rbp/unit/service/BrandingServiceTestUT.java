@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class BrandingServiceTest {
+public class BrandingServiceTestUT {
 
     private Map sampleMap;
     private Contact sampleContact;
