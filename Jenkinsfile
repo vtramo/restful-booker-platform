@@ -9,6 +9,7 @@ pipeline {
     }
 
     options {
+        disableConcurrentBuilds()
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '100', daysToKeepStr: '', numToKeepStr: '100')
         timestamps()
         skipStagesAfterUnstable()
