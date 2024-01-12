@@ -1,16 +1,25 @@
-FROM openjdk:15-slim
+ARG JAVA_VERSION=17
+FROM openjdk:${JAVA_VERSION}-slim
 
-ADD . /usr/local/message
+RUN apt-get update && apt-get -y install curl
 
-WORKDIR /usr/local/message
+COPY ./target/restful-booker-platform-message-*.jar ./target/
 
-ENV AUTH_SERVICE_URL=localhost:3004
 ENV PROFILE=dev
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} \
+    ./target/restful-booker-platform-message-*.jar
 
-RUN apt-get update && apt-get install dos2unix
-RUN dos2unix mvnw
-RUN chmod +x mvnw
-RUN ./mvnw -DskipTests=true -q clean package
-
-ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} target/restful-booker-platform-message-*.jar -D
 EXPOSE 3006
+HEALTHCHECK \
+    --interval=5s \
+    --timeout=5s  \
+    --retries=3   \
+    CMD curl http://localhost:3006/message/actuator/health
+
+ARG BUILD_NUMBER=0
+ARG BUILD_TAG=local
+ARG GIT_COMMIT=local
+
+LABEL build_number=${BUILD_NUMBER}
+LABEL build_tag=${BUILD_TAG}
+LABEL git_commit=${GIT_COMMIT}
