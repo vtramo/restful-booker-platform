@@ -1,13 +1,25 @@
-FROM openjdk:15-slim
+ARG JAVA_VERSION=17
+FROM openjdk:${JAVA_VERSION}-slim
 
-ADD . /usr/local/room
+RUN apt-get update && apt-get -y install curl
 
-WORKDIR /usr/local/room
+COPY ./target/restful-booker-platform-room-*.jar ./target/
 
 ENV PROFILE=dev
-ENV AUTH_SERVICE_URL=localhost:3001
+ENTRYPOINT java -jar -Dspring.profiles.active=${PROFILE} \
+    ./target/restful-booker-platform-room-*.jar
 
+EXPOSE 3001
+HEALTHCHECK \
+    --interval=5s \
+    --timeout=5s  \
+    --retries=3   \
+    CMD curl http://localhost:3001/room/actuator/health
 
-COPY ./target .
+ARG BUILD_NUMBER=0
+ARG BUILD_TAG=local
+ARG GIT_COMMIT=local
 
-ENTRYPOINT java -jar -Dspring.profiles.active=$PROFILE target/restful-booker-platform-room-*.jar -D
+LABEL build_number=${BUILD_NUMBER}
+LABEL build_tag=${BUILD_TAG}
+LABEL git_commit=${GIT_COMMIT}
