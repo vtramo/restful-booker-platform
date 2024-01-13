@@ -46,7 +46,7 @@ services:
   rbp-assets:
     networks:
       jenkins:
-    image: ${DOCKER_REGISTRY_URL-}/rbp-assets:latest
+    image: ${DOCKER_REGISTRY_URL-}/rbp-assets:1.0
     ports:
       - "3003:3003"
     depends_on:
