@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
@@ -20,7 +21,7 @@ import static org.hamcrest.Matchers.is;
 
 public class MakeAReservationStepDefs {
 
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver = new ChromeDriver(new ChromeOptions().addArguments("--headless", "--remote-debugging-pipe"));
 
     @Given("There is a free room")
     @And("I am on the homepage")
