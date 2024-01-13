@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.is;
 
 public class MakeAReservationStepDefs {
 
-    WebDriver driver = new ChromeDriver(new ChromeOptions().addArguments("--headless", "--remote-debugging-pipe"));
+    WebDriver driver = new ChromeDriver(new ChromeOptions().addArguments("--headless", "--disable-dev-tools", "--no-sandbox"));
 
     @Given("There is a free room")
     @And("I am on the homepage")
