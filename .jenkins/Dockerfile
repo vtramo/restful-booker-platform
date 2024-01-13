@@ -6,7 +6,8 @@ RUN apt-get update && \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common
+    software-properties-common \
+    wget
 
 # Add Docker GPG key and repository
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -29,5 +30,11 @@ ARG JMETER_TGZ="${JMETER_DIR}.tgz"
 ARG JMETER_URL="https://dlcdn.apache.org//jmeter/binaries/${JMETER_TGZ}"
 RUN curl -LO "${JMETER_URL}" && tar -xzf "$(basename "${JMETER_URL}")" && rm -rf "${JMETER_TGZ}"
 ENV JMETER_HOME="/${JMETER_DIR}/bin"
+
+# Install Chrome (Selenium)
+RUN apt-get install -y gnupg
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+RUN apt-get update && apt-get -y install google-chrome-stable
 
 CMD ["/bin/bash"]
