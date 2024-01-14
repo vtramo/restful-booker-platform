@@ -24,6 +24,12 @@ services:
       rbp-auth:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3000/message/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-room:
     <<: *networks
@@ -40,6 +46,12 @@ services:
       postgres:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3001/room/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-branding:
     <<: *networks
@@ -50,6 +62,12 @@ services:
       rbp-auth:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3002/branding/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-assets:
     <<: *networks
@@ -74,6 +92,12 @@ services:
       postgres:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3004/auth/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-report:
     <<: *networks
@@ -89,6 +113,12 @@ services:
       rbp-booking:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3005/report/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-message:
     <<: *networks
@@ -99,6 +129,12 @@ services:
       rbp-auth:
         condition: service_started
     restart: always
+    healthcheck:
+      test: curl http://localhost:3005/message/actuator/health
+      interval: 7s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rbp-proxy:
     <<: *networks
