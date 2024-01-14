@@ -291,6 +291,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Image Delivery') {
+            environment {
+                CI_DIR = 'ci'
+            }
+
+            steps {
+                dir("${CI_DIR}") {
+                    sh './image_delivery.sh'
+                }
+            }
+        }
     }
 
     post {
