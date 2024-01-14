@@ -2,13 +2,12 @@ version: '3.7'
 
 x-external-networks: &external-networks
   networks:
-    external-network:
+    rbp-network:
       name: ${RBP_E2E_DOCKER_NETWORK:-jenkins}
-      external: true
 
 x-networks: &networks
   networks:
-    - external-network
+    - rbp-network
 
 services:
   rbp-booking:
