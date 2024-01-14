@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class MakeAReservationStepDefs {
-    WebDriver driver = WebDrivers.driver;
+    WebDriver driver = WebDrivers.buildWebDriver();
 
     @Given("There is a free room")
     @And("I am on the homepage")

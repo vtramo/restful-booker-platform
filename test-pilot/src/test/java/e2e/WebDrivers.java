@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class WebDrivers {
     public static String TEST_PILOT_WEB_DRIVER = Optional.ofNullable(System.getenv("TEST_PILOT_WEB_DRIVERR")).orElse("chrome");
-    public static WebDriver driver = buildWebDriver();
 
     public static WebDriver buildWebDriver() {
         switch (TEST_PILOT_WEB_DRIVER) {
