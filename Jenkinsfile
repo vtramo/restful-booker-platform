@@ -163,18 +163,118 @@ pipeline {
         stage('E2E Tests') {
             environment {
                 RBP_TEST_PILOT_MAIN_DIR = 'test-pilot'
+                DISABLE_TESTCONTAINERS = 'true'
                 RBP_PROXY_URL = 'http://rbp-proxy:8080'
             }
 
             options {
-                timeout(time: 1, unit: 'MINUTES')
+                timeout(time: 3, unit: 'MINUTES')
             }
 
-            steps {
-                dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                    sh '''
-                        mvn clean test -Dcucumber.features=src/test/resources
-                    '''
+            parallel {
+                stage('Chrome') {
+                    environment {
+                        WEB_DRIVER = 'chrome'
+                        RBP_E2E_DOCKER_NETWORK = 'rbp-e2e-chrome'
+                        RBP_E2E_DOCKER_PROJECT_NAME = 'rbp-e2e-chrome'
+                    }
+
+                    agent {
+                        label 'rbp-e2e-chrome'
+                    }
+
+                    steps {
+                        unstash 'rbp'
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        }
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                            sh '''
+                                printenv && \
+                                mvn clean test -Dcucumber.features=src/test/resources
+                            '''
+                        }
+                    }
+
+                    post {
+                        always {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                        }
+                    }
+                }
+
+                stage('Firefox') {
+                    environment {
+                        WEB_DRIVER = 'firefox'
+                        RBP_E2E_DOCKER_NETWORK = 'rbp-e2e-firefox'
+                        RBP_E2E_DOCKER_PROJECT_NAME = 'rbp-e2e-firefox'
+                    }
+
+                    agent {
+                        label 'rbp-e2e-firefox'
+                    }
+
+                    steps {
+                        unstash 'rbp'
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        }
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                            sh '''
+                                printenv && \
+                                mvn clean test -Dcucumber.features=src/test/resources
+                            '''
+                        }
+                    }
+
+                    post {
+                        always {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                        }
+                    }
+                }
+
+                stage('Edge') {
+                    environment {
+                        WEB_DRIVER = 'edge'
+                        RBP_E2E_DOCKER_NETWORK = 'rbp-e2e-edge'
+                        RBP_E2E_DOCKER_PROJECT_NAME = 'rbp-e2e-edge'
+                    }
+
+                    agent {
+                        label 'rbp-e2e-edge'
+                    }
+
+                    steps {
+                        unstash 'rbp'
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        }
+
+                        dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                            sh '''
+                                printenv && \
+                                mvn clean test -Dcucumber.features=src/test/resources
+                            '''
+                        }
+                    }
+
+                    post {
+                        always {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                        }
+                    }
+                }
+            }
+
+            post {
+                always {
+                    sh 'docker compose -f docker-compose-test.yaml down || :'
                 }
             }
         }
