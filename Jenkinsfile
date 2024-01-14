@@ -201,6 +201,13 @@ pipeline {
                             dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
                                 sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
                             }
+
+                            dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                                junit(
+                                    testResults: 'target/surefire-reports/**/*.xml',
+                                    allowEmptyResults: true
+                                )
+                            }
                         }
                     }
                 }
@@ -233,6 +240,13 @@ pipeline {
                             dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
                                 sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
                             }
+
+                            dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                                junit(
+                                    testResults: 'target/surefire-reports/**/*.xml',
+                                    allowEmptyResults: true
+                                )
+                            }
                         }
                     }
                 }
@@ -264,6 +278,13 @@ pipeline {
                         always {
                             dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
                                 sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            }
+
+                            dir("${RBP_TEST_PILOT_MAIN_DIR}") {
+                                junit(
+                                    testResults: 'target/surefire-reports/**/*.xml',
+                                    allowEmptyResults: true
+                                )
                             }
                         }
                     }
