@@ -163,6 +163,7 @@ pipeline {
         stage('E2E Tests') {
             environment {
                 RBP_TEST_PILOT_MAIN_DIR = 'test-pilot'
+                RBP_TEST_PILOT_DOCKER_DIR = "${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker"
                 DISABLE_TESTCONTAINERS = 'true'
                 RBP_PROXY_URL = 'http://rbp-proxy:8080'
             }
@@ -186,21 +187,20 @@ pipeline {
                     steps {
                         unstash 'rbp'
 
-                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                            sh '''
-                                printenv && \
-                                mvn clean test -Dcucumber.features=src/test/resources
-                            '''
+                            sh 'mvn clean test -Dcucumber.features=src/test/resources'
                         }
                     }
 
                     post {
                         always {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                                sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            }
                         }
                     }
                 }
@@ -219,21 +219,20 @@ pipeline {
                     steps {
                         unstash 'rbp'
 
-                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                            sh '''
-                                printenv && \
-                                mvn clean test -Dcucumber.features=src/test/resources
-                            '''
+                            sh 'mvn clean test -Dcucumber.features=src/test/resources'
                         }
                     }
 
                     post {
                         always {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                                sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            }
                         }
                     }
                 }
@@ -252,29 +251,22 @@ pipeline {
                     steps {
                         unstash 'rbp'
 
-                        dir("${RBP_TEST_PILOT_MAIN_DIR}/src/test/resources/docker") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
+                        dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
-                            sh '''
-                                printenv && \
-                                mvn clean test -Dcucumber.features=src/test/resources
-                            '''
+                            sh 'mvn clean test -Dcucumber.features=src/test/resources'
                         }
                     }
 
                     post {
                         always {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
+                                sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} down || :"
+                            }
                         }
                     }
-                }
-            }
-
-            post {
-                always {
-                    sh 'docker compose -f docker-compose-test.yaml down || :'
                 }
             }
         }
