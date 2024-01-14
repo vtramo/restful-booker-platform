@@ -1,13 +1,23 @@
 version: '3.7'
+
+x-external-networks: &external-networks
+  networks:
+    rbp-network:
+      name: ${RBP_E2E_DOCKER_NETWORK:-jenkins}
+      external: true
+
+x-networks: &networks
+  networks:
+    - rbp-network
+
 services:
   rbp-booking:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-booking:latest
     environment:
       - MESSAGE_SERVICE_URL=rbp-message
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       rbp-message:
         condition: service_started
@@ -16,15 +26,14 @@ services:
     restart: always
 
   rbp-room:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-room:latest
     environment:
         ROOM_DB_JDBC_URL: "jdbc:postgresql://postgres:5432/test?loggerLevel=OFF"
         ROOM_DB_JDBC_USERNAME: "postgres"
         ROOM_DB_JDBC_PASSWORD: "postgres"
-    ports:
-      - "3001:3001"
+    expose:
+      - "3001"
     depends_on:
       rbp-auth:
         condition: service_started
@@ -33,51 +42,47 @@ services:
     restart: always
 
   rbp-branding:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-branding:latest
-    ports:
-      - "3002:3002"
+    expose:
+      - "3002"
     depends_on:
       rbp-auth:
         condition: service_started
     restart: always
 
   rbp-assets:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-assets:1.0
-    ports:
-      - "3003:3003"
+    expose:
+      - "3003"
     depends_on:
       rbp-proxy:
         condition: service_started
     restart: always
 
   rbp-auth:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-auth:latest
     environment:
         AUTH_DB_JDBC_URL: jdbc:postgresql://postgres:5432/test?loggerLevel=OFF
         AUTH_DB_JDBC_USERNAME: postgres
         AUTH_DB_JDBC_PASSWORD: postgres
-    ports:
-      - "3004:3004"
+    expose:
+      - "3004"
     depends_on:
       postgres:
         condition: service_started
     restart: always
 
   rbp-report:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-report:latest
     environment:
       - BOOKING_SERVICE_URL=rbp-booking
       - ROOM_SERVICE_URL=rbp-room
-    ports:
-      - "3005:3005"
+    expose:
+      - "3005"
     depends_on:
       rbp-room:
         condition: service_started
@@ -86,25 +91,23 @@ services:
     restart: always
 
   rbp-message:
-    networks:
-      jenkins:
+    <<: *networks
     image: ${DOCKER_REGISTRY_URL-}/rbp-message:latest
-    ports:
-      - "3006:3006"
+    expose:
+      - "3006"
     depends_on:
       rbp-auth:
         condition: service_started
     restart: always
 
   rbp-proxy:
-    networks:
-      jenkins:
+    <<: *networks
     image: nginx:alpine
     build:
       context: .
       dockerfile: Dockerfile.nginx
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       rbp-report:
         condition: service_started
@@ -121,8 +124,7 @@ services:
     restart: always
 
   postgres:
-    networks:
-      jenkins:
+    <<: *networks
     image: postgres:15.2-alpine
     build:
       context: .
@@ -131,9 +133,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: test
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
 
-networks:
-  jenkins:
-    external: true
+<<: *external-networks

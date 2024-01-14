@@ -37,4 +37,11 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 RUN apt-get update && apt-get -y install google-chrome-stable
 
+# Install Firefox (selenium)
+RUN apt-get -y install firefox && \
+    wget https://github.com/mozilla/geckodriver/releases/download/v0.25.0/geckodriver-v0.25.0-linux64.tar.gz && \
+    tar xzf geckodriver-v0.25.0-linux64.tar.gz && \
+    mv geckodriver /usr/bin/geckodriver && \
+    rm geckodriver-v0.25.0-linux64.tar.gz
+
 CMD ["/bin/bash"]
