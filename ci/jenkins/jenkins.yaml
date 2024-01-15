@@ -1,0 +1,355 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - basicSSHUserPrivateKey:
+          id: "jenkins-agent1-ssh"
+          privateKeySource:
+            directEntry:
+              privateKey: "{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}"
+          scope: GLOBAL
+          username: "jenkins"
+      - gitHubApp:
+          appID: "372707"
+          description: "restful-booker-platform-github-app"
+          id: "restful-booker-platform-github-app"
+          privateKey: "{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}"
+      - string:
+          id: "sonarqube-token"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwDIsMHtPqUH6DTipYDCXK/Q3FT5rzzlUqhAII++1JmN+jeIoDfhpFBruq3xi/s6RWaOMhSAhjBHH2pRdA+Goe8w==}"
+      - string:
+          id: "rbp-slack"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAgYEuZgqFPwRXQTuQxddF2fd19n2/Rd47K6KFZQIlIes0P9y9ygrzZNnD0AvgZ2vbk}"
+      - string:
+          description: "The Docker registry URL."
+          id: "docker-registry-url"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAQsmQaKiR6hCUUp0vW+jLqdpFcjEW3BzibxXig6VpxhPg=}"
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  clouds:
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://socat:2375"
+        readTimeout: 60
+      errorDuration: 0
+      name: "docker-cloud-agent-0"
+      templates:
+      - connector: "attach"
+        dockerTemplateBase:
+          cpuPeriod: 0
+          cpuQuota: 0
+          image: "localhost:5000/jenkins-agent:1.0"
+          mounts:
+          - "type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock"
+          - "type=bind,src=/home/vincenzo/.m2,target=/root/.m2"
+          mountsString: |-
+            type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock
+            type=bind,src=/home/vincenzo/.m2,target=/root/.m2
+          network: "jenkins"
+        labelString: "build-agent"
+        mode: EXCLUSIVE
+        name: "Build Agent"
+        pullStrategy: PULL_ALWAYS
+        pullTimeout: 300
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://socat:2375"
+        readTimeout: 60
+      errorDuration: 0
+      name: "docker-cloud-agent-chrome"
+      templates:
+      - connector: "attach"
+        dockerTemplateBase:
+          cpuPeriod: 0
+          cpuQuota: 0
+          image: "localhost:5000/jenkins-agent:1.0"
+          mounts:
+          - "type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock"
+          - "type=bind,src=/home/vincenzo/.m2,target=/root/.m2"
+          mountsString: |-
+            type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock
+            type=bind,src=/home/vincenzo/.m2,target=/root/.m2
+          network: "rbp-e2e-chrome"
+        labelString: "rbp-e2e-chrome"
+        mode: EXCLUSIVE
+        name: "Build Agent"
+        pullStrategy: PULL_ALWAYS
+        pullTimeout: 300
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://socat:2375"
+        readTimeout: 60
+      errorDuration: 0
+      name: "docker-cloud-agent-firefox"
+      templates:
+      - connector: "attach"
+        dockerTemplateBase:
+          cpuPeriod: 0
+          cpuQuota: 0
+          image: "localhost:5000/jenkins-agent:1.0"
+          mounts:
+          - "type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock"
+          - "type=bind,src=/home/vincenzo/.m2,target=/root/.m2"
+          mountsString: |-
+            type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock
+            type=bind,src=/home/vincenzo/.m2,target=/root/.m2
+          network: "rbp-e2e-firefox"
+        labelString: "rbp-e2e-firefox"
+        mode: EXCLUSIVE
+        name: "Build Agent"
+        pullStrategy: PULL_ALWAYS
+        pullTimeout: 300
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://socat:2375"
+        readTimeout: 60
+      errorDuration: 0
+      name: "docker-cloud-agent-edge"
+      templates:
+      - connector: "attach"
+        dockerTemplateBase:
+          cpuPeriod: 0
+          cpuQuota: 0
+          image: "localhost:5000/jenkins-agent:1.0"
+          mounts:
+          - "type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock"
+          - "type=bind,src=/home/vincenzo/.m2,target=/root/.m2"
+          mountsString: |-
+            type=bind,src=/var/run/docker.sock,target=/var/run/docker.sock
+            type=bind,src=/home/vincenzo/.m2,target=/root/.m2
+          network: "rbp-e2e-edge"
+        labelString: "rbp-e2e-edge"
+        mode: EXCLUSIVE
+        name: "Build Agent"
+        pullStrategy: PULL_ALWAYS
+        pullTimeout: 300
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  disabledAdministrativeMonitors:
+  - "hudson.util.DoubleLaunchChecker"
+  - "hudson.diagnosis.ReverseProxySetupMonitor"
+  labelAtoms:
+  - name: "build-agent"
+  - name: "built-in"
+  - name: "nolabelnolabel"
+  - name: "rbp-e2e-chrome"
+  - name: "rbp-e2e-edge"
+  - name: "rbp-e2e-firefox"
+  labelString: "nolabelnolabel"
+  markupFormatter: "plainText"
+  mode: EXCLUSIVE
+  myViewsTabBar: "standard"
+  nodeMonitors:
+  - diskSpaceMonitor:
+      freeSpaceThreshold: "1GB"
+  - tmpSpace:
+      freeSpaceThreshold: "1GB"
+  numExecutors: 0
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "admin"
+        name: "admin"
+        properties:
+        - "favorite"
+        - "myView"
+        - preferredProvider:
+            providerId: "default"
+        - "timezone"
+        - "experimentalFlags"
+        - mailer:
+            emailAddress: "admin@admin.com"
+        - "apiToken"
+        - "slack"
+  slaveAgentPort: 50000
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+globalCredentialsConfiguration:
+  configuration:
+    providerFilter: "none"
+    typeFilter: "none"
+appearance:
+  prism:
+    theme: PRISM
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  gitHooks:
+    allowedOnAgents: false
+    allowedOnController: false
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
+  sSHD:
+    port: -1
+  scriptApproval:
+    approvedScriptHashes:
+    - "SHA512:3f205299bef2fe3329258a42f2c60d332cc35ccb41a3ca0512d7869c6aff4561ff708c48123b4f7c3dec33ccca30d54fb8b9b51b5bc7070f96236d11a3f0bdcb"
+    approvedSignatures:
+    - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
+unclassified:
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        enableCache: false
+        manageHooks: false
+        repositoriesCacheDuration: 0
+        teamCacheDuration: 0
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  buildStepOperation:
+    enabled: false
+  email-ext:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: |-
+      $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+
+      Check console output at $BUILD_URL to view the results.
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    defaultTriggerIds:
+    - "hudson.plugins.emailext.plugins.trigger.FailureTrigger"
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: -1
+    precedenceBulk: false
+    watchingEnabled: false
+  enrichedSummaryConfig:
+    enrichedSummaryEnabled: false
+    httpClientDelayBetweenRetriesInSeconds: 1
+    httpClientMaxRetries: 3
+    httpClientTimeoutInSeconds: 1
+  fingerprints:
+    fingerprintCleanupDisabled: false
+    storage: "file"
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "http://localhost:8080/github-webhook/"
+  globalLibraries:
+    libraries:
+    - defaultVersion: "main"
+      name: "rbp-jenkins-shared-library"
+      retriever:
+        modernSCM:
+          libraryPath: "."
+          scm:
+            github:
+              configuredByUrl: true
+              id: "6f469dd4-5582-4e71-9535-d5d5297ec612"
+              repoOwner: "vtramo"
+              repository: "rbp-jenkins-shared-library"
+              repositoryUrl: "https://github.com/vtramo/rbp-jenkins-shared-library.git"
+              traits:
+              - gitHubBranchDiscovery:
+                  strategyId: 1
+              - gitHubPullRequestDiscovery:
+                  strategyId: 2
+              - gitHubForkDiscovery:
+                  strategyId: 2
+                  trust: "gitHubTrustPermissions"
+  globalTimeOutConfiguration:
+    operations:
+    - "abortOperation"
+    overwriteable: false
+  injectionConfig:
+    allowUntrusted: false
+    checkForBuildAgentErrors: false
+    enabled: false
+    enforceUrl: false
+    injectCcudExtension: false
+    injectMavenExtension: false
+  junitTestResultStorage:
+    storage: "file"
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://localhost:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+  scmGit:
+    addGitTagAction: false
+    allowSecondFetch: false
+    createAccountBasedOnEmail: false
+    disableGitToolChooser: false
+    hideCredentials: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  slackNotifier:
+    botUser: false
+    room: "ci"
+    sendAsText: false
+    teamDomain: "restfulbookerplatform"
+    tokenCredentialId: "rbp-slack"
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: true
+    installations:
+    - credentialsId: "sonarqube-token"
+      name: "sonarqube"
+      serverUrl: "http://sonarqube:9000"
+      triggers:
+        skipScmCause: false
+        skipUpstreamCause: false
+  timestamper:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+  warningsParsers:
+    consoleLogScanningPermitted: false
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
+  sonarRunnerInstallation:
+    installations:
+    - name: "sonarqube-scanner"
+      properties:
+      - installSource:
+          installers:
+          - sonarRunnerInstaller:
+              id: "5.0.1.3006"

@@ -13,7 +13,10 @@ services:
       - "2376:2375"
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    image: ${DOCKER_REGISTRY_URL}/jenkins:lts-jdk21
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     environment:
       - TZ=Europe/Rome
     depends_on:
