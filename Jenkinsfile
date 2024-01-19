@@ -31,6 +31,12 @@ pipeline {
             }
         }
 
+        stage('Mine repository'){
+            steps{
+                mineRepository()
+            }
+        }
+
         stage('Stash git repository') {
             steps {
                 stash includes: '**', name: 'rbp', useDefaultExcludes: false
