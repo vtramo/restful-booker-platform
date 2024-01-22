@@ -130,7 +130,7 @@ services:
         condition: service_started
     restart: always
     healthcheck:
-      test: curl http://localhost:3005/message/actuator/health
+      test: curl http://localhost:3006/message/actuator/health
       interval: 7s
       timeout: 5s
       retries: 3
