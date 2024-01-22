@@ -194,7 +194,7 @@ pipeline {
                         unstash 'rbp'
 
                         dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
@@ -233,7 +233,7 @@ pipeline {
                         unstash 'rbp'
 
                         dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
@@ -272,7 +272,7 @@ pipeline {
                         unstash 'rbp'
 
                         dir("${RBP_TEST_PILOT_DOCKER_DIR}") {
-                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d"
+                            sh "docker compose -f docker-compose-test.yaml -p ${RBP_E2E_DOCKER_PROJECT_NAME} up -d --wait"
                         }
 
                         dir("${RBP_TEST_PILOT_MAIN_DIR}") {
